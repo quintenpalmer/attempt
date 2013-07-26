@@ -1,0 +1,14 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+<html>
+    <head>
+        <title>Attempt</title>
+        <link href="{{ STATIC_PREFIX }}css/sitewide.css" rel="stylesheet" type="text/css">
+        <link href="{{ STATIC_PREFIX }}js/main.js" rel="stylesheet" type="text/javascript">
+    </head>
+    <body>
+        <div id="content">
+            {% block content%}{% endblock %}
+        </div>
+    </body>
+</html>
