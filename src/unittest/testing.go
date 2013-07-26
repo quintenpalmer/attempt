@@ -1,8 +1,10 @@
-package gogame
+package unittest
 
 import (
     "testing"
 )
+
+type Any interface{}
 
 func Failure(t *testing.T, x, y Any, mid string) {
     t.Fail()
