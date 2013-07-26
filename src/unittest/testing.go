@@ -6,9 +6,9 @@ import (
 
 type Any interface{}
 
-func Failure(t *testing.T, x, y Any, mid string) {
+func Failure(t *testing.T, msg ...Any) {
     t.Fail()
-    t.Log(x, mid, y)
+    t.Log(msg)
 }
 
 func CheckEqual(t *testing.T, x, y Any) {
@@ -20,5 +20,17 @@ func CheckEqual(t *testing.T, x, y Any) {
 func CheckNotEqual(t *testing.T, x, y Any) {
     if x == y {
         Failure(t, x, y, "==")
+    }
+}
+
+func Check(t *testing.T, x Any) {
+    if x == false {
+        Failure(t, x, "== false")
+    }
+}
+
+func CheckFalse(t *testing.T, x Any) {
+    if x == true {
+        Failure(t, x, "== true")
     }
 }
