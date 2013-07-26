@@ -1,7 +1,7 @@
 {
 	"zone" : {
-		"objects" : [
-			"viewable" : {
+		"viewables" : [
+			{
 				"loc" : {
 					"x" : "{I}",
 					"y" : "{I}"
@@ -10,7 +10,7 @@
 			},
 		]
 		"people" : [
-			"person" : {
+			{
 				"name" : "{S}",
 				"health" : "{I}",
 				"viewable" : {
