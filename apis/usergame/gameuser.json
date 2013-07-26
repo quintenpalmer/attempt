@@ -1,0 +1,30 @@
+{
+	"zone" : {
+		"objects" : [
+			"viewable" : {
+				"loc" : {
+					"x" : "{I}",
+					"y" : "{I}"
+				},
+				"icon" : "{*.png}"
+			},
+		]
+		"people" : [
+			"person" : {
+				"name" : "{S}",
+				"health" : "{I}",
+				"viewable" : {
+					"loc" : {
+						"x" : "{I}",
+						"y" : "{I}"
+					},
+					"icon" : "{*.png}"
+				}
+			}
+		]
+	},
+	"player" : {
+		"name" : "{S}",
+		"health" : "{I}"
+	}
+}
