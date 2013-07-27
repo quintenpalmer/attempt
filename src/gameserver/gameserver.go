@@ -32,7 +32,7 @@ func (gs *GameServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (gs *GameServer) RegisterAllCallbacks(cbs map[string]interface{}) error {
     for k, v := range cbs {
-        err := gs.router.registerCallback(k, v)
+        err := gs.RegisterCallback(k, v)
         if err != nil {
             return err
         }
