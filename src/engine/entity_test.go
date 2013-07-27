@@ -7,7 +7,7 @@ import (
 )
 
 var (
-    simpleMover := MoveableEntity{0, vector.Vector2{5, 5}}
+    simpleMover = MoveableEntity{Entity{0, vector.Vector2{5, 5}}}
 )
 
 func TestEntityMove(t *testing.T) {
