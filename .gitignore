@@ -3,6 +3,7 @@
 
 # temp files
 *~
+\#*
 
 # go files
 pkg
