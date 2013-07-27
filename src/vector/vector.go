@@ -1,4 +1,4 @@
-package gogame
+package vector
 
 type Vector2 struct {
     x int
@@ -33,4 +33,26 @@ func DotProduct(a, b Vector2) int {
 
 func SumVector(a Vector2) int {
     return a.x + a.y
+}
+
+func (v *Vector2) mutateCall(x Vector2, f func(Vector2, Vector2) Vector2) {
+    newVector := f(*v, x)
+    v.x = newVector.x
+    v.y = newVector.y
+}
+
+func (v *Vector2) Add(x Vector2) {
+    v.mutateCall(x, AddVector)
+}
+
+func (v *Vector2) Sub(x Vector2) {
+    v.mutateCall(x, SubVector)
+}
+
+func (v *Vector2) Mul(x Vector2) {
+    v.mutateCall(x, MulVector)
+}
+
+func (v *Vector2) Div(x Vector2) {
+    v.mutateCall(x, DivVector)
 }

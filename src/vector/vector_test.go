@@ -1,4 +1,4 @@
-package gogame
+package vector
 
 import (
     "testing"
@@ -54,4 +54,28 @@ func TestSumVector(t *testing.T) {
     unittest.CheckEqual(t, SumVector(zero), 0)
     unittest.CheckEqual(t, SumVector(three_four), 7)
     unittest.CheckEqual(t, SumVector(six_eight), 14)
+}
+
+func TestVectorAdd(t *testing.T) {
+    v := Vector2{0, 1}
+    v.Add(Vector2{3, 5})
+    unittest.CheckEqual(t, v, Vector2{3, 6})
+}
+
+func TestVectorSub(t *testing.T) {
+    v := Vector2{5, 5}
+    v.Sub(Vector2{3, 7})
+    unittest.CheckEqual(t, v, Vector2{2, -2})
+}
+
+func TestVectorMul(t *testing.T) {
+    v := Vector2{5, 5}
+    v.Mul(v)
+    unittest.CheckEqual(t, v, Vector2{25, 25})
+}
+
+func TestVectorDiv(t *testing.T) {
+    v := Vector2{10, 10}
+    v.Div(Vector2{5, 5})
+    unittest.CheckEqual(t, v, Vector2{2, 2})
 }
