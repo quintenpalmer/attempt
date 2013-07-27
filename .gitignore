@@ -1,2 +1,5 @@
 # Sublime Project Files for cool people
 *.sublime*
+
+# temp files
+*~
