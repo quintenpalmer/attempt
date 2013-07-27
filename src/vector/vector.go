@@ -1,14 +1,14 @@
 package vector
 
 type Vector2 struct {
-    x int
-    y int
+    X int
+    Y int
 }
 
 // TODO: Look into handling overflows.
 
 func AddVector(a, b Vector2) Vector2 {
-    return Vector2{a.x + b.x, a.y + b.y}
+    return Vector2{a.X + b.X, a.Y + b.Y}
 }
 
 func ScalarMulVector(a Vector2, m int) Vector2 {
@@ -20,11 +20,11 @@ func SubVector(a, b Vector2) Vector2 {
 }
 
 func MulVector(a, b Vector2) Vector2 {
-    return Vector2{a.x * b.x, a.y * b.y}
+    return Vector2{a.X * b.X, a.Y * b.Y}
 }
 
 func DivVector(a, b Vector2) Vector2 {
-    return Vector2{a.x / b.x, a.y / b.y}
+    return Vector2{a.X / b.X, a.Y / b.Y}
 }
 
 func DotProduct(a, b Vector2) int {
@@ -32,13 +32,13 @@ func DotProduct(a, b Vector2) int {
 }
 
 func SumVector(a Vector2) int {
-    return a.x + a.y
+    return a.X + a.Y
 }
 
 func (v *Vector2) mutateCall(x Vector2, f func(Vector2, Vector2) Vector2) {
     newVector := f(*v, x)
-    v.x = newVector.x
-    v.y = newVector.y
+    v.X = newVector.X
+    v.Y = newVector.Y
 }
 
 func (v *Vector2) Add(x Vector2) {
