@@ -18,6 +18,7 @@ type Player struct {
     Named
     loginState LoginState
     token string
+    client *Client
 }
 
 func MakePlayer(id uint, name string, position vector.Vector2) *Player {
@@ -26,7 +27,13 @@ func MakePlayer(id uint, name string, position vector.Vector2) *Player {
         Named{name},
         OFFLINE,
         "",
+        nil,
     }
+}
+
+func (p *Player) SetClient(c *Client) {
+    p.client = c
+    c.player = p
 }
 
 func (p *Player) IsOnline() bool {
