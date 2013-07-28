@@ -79,3 +79,10 @@ func TestVectorDiv(t *testing.T) {
     v.Div(Vector2{5, 5})
     unittest.CheckEqual(t, v, Vector2{2, 2})
 }
+
+func TestVectorValues(t *testing.T) {
+    v := Vector2{10, 20}
+    x, y := v.Values()
+    unittest.CheckEqual(t, x, 10)
+    unittest.CheckEqual(t, y, 20)
+}

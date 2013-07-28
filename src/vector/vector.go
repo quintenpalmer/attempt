@@ -56,3 +56,7 @@ func (v *Vector2) Mul(x Vector2) {
 func (v *Vector2) Div(x Vector2) {
     v.mutateCall(x, DivVector)
 }
+
+func (v *Vector2) Values() (int, int) {
+    return v.X, v.Y
+}
