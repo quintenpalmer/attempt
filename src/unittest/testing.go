@@ -13,13 +13,13 @@ func Failure(t *testing.T, msg ...Any) {
 
 func CheckEqual(t *testing.T, x, y Any) {
     if x != y {
-        Failure(t, x, y, "!=")
+        Failure(t, x, "!=", y)
     }
 }
 
 func CheckNotEqual(t *testing.T, x, y Any) {
     if x == y {
-        Failure(t, x, y, "==")
+        Failure(t, x, "==", y)
     }
 }
 
