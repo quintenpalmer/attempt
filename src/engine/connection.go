@@ -7,6 +7,7 @@ import (
     "log"
     "net/http"
     "time"
+    "strings"
 )
 
 
@@ -105,7 +106,7 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Method not allowed", 405)
         return
     }
-    if r.Header.Get("Origin") != "http://"+r.Host {
+    if strings.Split(r.Header.Get("Origin"),":")[0] != strings.Split("http://"+r.Host,":")[0] {
         http.Error(w, "Origin not allowed", 403)
         return
     }
