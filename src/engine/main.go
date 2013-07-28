@@ -1,9 +1,11 @@
 package engine
 
 import (
-    "fmt"
+    "net/http"
 )
 
 func Main() {
-    fmt.Println("This is the best game engine that has ever existed")
+    go world.HandleConnections()
+    http.HandleFunc("/ws", serveWs)
+    http.ListenAndServe(":8080", nil)
 }
