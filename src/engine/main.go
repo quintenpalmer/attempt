@@ -7,5 +7,5 @@ import (
 func Main() {
     go world.HandleConnections()
     http.HandleFunc("/ws", serveWs)
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(":8888", nil)
 }
