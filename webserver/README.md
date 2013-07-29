@@ -5,15 +5,15 @@ Requisites
 ---------
 Python  
 Ubuntu  
-	sudo apt-get install python  
+    sudo apt-get install python  
 Fedora  
-	sudo yum install python  
+    sudo yum install python  
 
 Django  
 Ubuntu  
-	sudo apt-get install django  
+    sudo apt-get install django  
 Fedora  
-	sudo yum install django  
+    sudo yum install django  
 
 Run
 ---
