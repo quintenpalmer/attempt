@@ -8,7 +8,7 @@ $(document).ready(function () {
         console.log("connection closed");
     }
     conn.onmessage = function(evt) {
-        console.log("got a message");
+        console.log("received : " + evt.data);
     }
 
 });
