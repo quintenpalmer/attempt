@@ -9,3 +9,6 @@
 pkg
 attempt
 bin
+
+#python files
+*.pyc
