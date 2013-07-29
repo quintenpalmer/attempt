@@ -15,7 +15,7 @@ Fedora
 Django  
 Ubuntu  
 
-    sudo apt-get install django  
+    sudo apt-get install python-django  
 
 Fedora  
 
