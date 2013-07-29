@@ -1,6 +1,7 @@
 package engine
 
 import (
+    "cgl.tideland.biz/applog"
     "github.com/garyburd/go-websocket/websocket"
     "io"
     "io/ioutil"
@@ -34,6 +35,7 @@ type connection struct {
 
 // readPump pumps messages from the websocket connection to the hub.
 func (c *connection) readPump(client *Client) {
+    applog.Debugf("Started readPump")
     defer func() {
         world.unregister <- client
         c.ws.Close()
@@ -74,6 +76,7 @@ func (c *connection) write(opCode int, payload []byte) error {
 
 // writePump pumps messages from the hub to the websocket connection.
 func (c *connection) writePump(client *Client) {
+    applog.Debugf("Started writePump")
     ticker := time.NewTicker(pingPeriod)
     defer func() {
         ticker.Stop()

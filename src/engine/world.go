@@ -1,6 +1,7 @@
 package engine
 
 import (
+    "cgl.tideland.biz/applog"
     "io"
     "vector"
 )
@@ -40,6 +41,7 @@ func (w *World) GetPlayer(name string) (*Player, bool) {
 
 func (w *World) HandleConnections() {
     for conn := range w.register {
+        applog.Debugf("Received request to register new player")
         conn.readTemplate(func (r io.Reader) (bool, error) {
             p := MakePlayer(5, "temp-player", vector.Vector2{0, 0})
             p.SetClient(MakeClient())

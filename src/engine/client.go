@@ -1,5 +1,9 @@
 package engine
 
+import (
+    "cgl.tideland.biz/applog"
+)
+
 type Client struct {
     player *Player
     outgoing chan []byte
