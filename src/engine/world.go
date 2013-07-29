@@ -44,7 +44,8 @@ func (w *World) HandleConnections() {
             p := MakePlayer(5, "temp-player", vector.Vector2{0, 0})
             p.SetClient(MakeClient())
             w.players[p.name] = p
-            conn.getClient <- p.client
+            go conn.writePump(p.client)
+            go conn.readPump(p.client)
             return true, nil
         })
     }

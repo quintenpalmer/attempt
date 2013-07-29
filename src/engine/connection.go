@@ -30,9 +30,6 @@ const (
 type connection struct {
     // The websocket connection.
     ws *websocket.Conn
-
-    // Lets the world return a client to this connection
-    getClient chan *Client
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -118,15 +115,7 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
         log.Println(err)
         return
     }
-    c := &connection {
-        ws: ws,
-        getClient: make(chan *Client),
-    }
-    // Register with the world. Don't start the read/write loops until we get
-    // a client back since the world will read from the websocket to get
-    // authentication information.
+    c := &connection {ws}
+    // Hand the connection over to the world to create a player
     world.register <- c
-    client := <-c.getClient
-    go c.writePump(client)
-    c.readPump(client)
 }
