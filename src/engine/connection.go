@@ -63,7 +63,7 @@ func (c *connection) readTemplate(handler func(io.Reader) (bool, error)) {
             c.ws.SetReadDeadline(time.Now().Add(readWait))
         case websocket.OpText:
             if quit, err := handler(r); quit || err != nil {
-                break
+                return
             }
         }
     }
