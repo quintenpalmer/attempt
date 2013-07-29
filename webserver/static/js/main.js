@@ -14,5 +14,5 @@ $(document).ready(function () {
 });
 
 function sendit() {
-    console.log(conn.send("hi"));
+    console.log(conn.send('{"msg": "hi"}'));
 }

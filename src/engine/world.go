@@ -48,6 +48,7 @@ func (w *World) HandleConnections() {
             w.players[p.name] = p
             go conn.writePump(p.client)
             go conn.readPump(p.client)
+            go p.client.read()
             return true, nil
         })
     }

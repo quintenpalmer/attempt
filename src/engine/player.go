@@ -2,6 +2,7 @@ package engine
 
 import (
     "cgl.tideland.biz/applog"
+    "encoding/json"
     "vector"
 )
 
@@ -34,7 +35,7 @@ func MakePlayer(id uint, name string, position vector.Vector2) *Player {
 
 func (p *Player) SetClient(c *Client) {
     p.client = c
-    c.player = p
+    c.com = p
 }
 
 func (p *Player) IsOnline() bool {
@@ -72,4 +73,17 @@ func (p *Player) Login(clientToken string) bool {
         p.doLogout()
         return false
     }
+}
+
+func (p *Player) HandleCommand(command map[string]interface{}) {
+    p.client.write(p)
+}
+
+func (p *Player) MarshalGame() []byte {
+    packet, err := json.Marshal(p)
+    if err != nil {
+        applog.Criticalf("Error marshalling response. %s", err)
+        panic(err)
+    }
+    return packet
 }
