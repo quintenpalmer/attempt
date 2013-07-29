@@ -106,7 +106,7 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Method not allowed", 405)
         return
     }
-    if strings.Split(r.Header.Get("Origin"),":")[0] != strings.Split("http://"+r.Host,":")[0] {
+    if strings.Split(r.Header.Get("Origin"),":")[1] != strings.Split("http://"+r.Host,":")[1] {
         http.Error(w, "Origin not allowed", 403)
         return
     }
