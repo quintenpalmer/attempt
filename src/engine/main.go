@@ -2,10 +2,13 @@ package engine
 
 import (
     "cgl.tideland.biz/applog"
+    "flag"
     "net/http"
 )
 
 func Main() {
+    logLevel := flag.Int("log", applog.LevelDebug, "The Logging Level[0-4]")
+    flag.Parse()
     setupLogger(*logLevel)
 
     go world.HandleConnections()
