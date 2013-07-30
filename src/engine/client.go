@@ -5,6 +5,19 @@ import (
     "fmt"
 )
 
+type GameReader interface {
+    UnmarshalGame([]byte) error
+}
+
+type GameWriter interface {
+    MarshalGame() []byte
+}
+
+type GameReaderWriter interface {
+    GameReader
+    GameWriter
+}
+
 type PacketParseError byte
 
 func (ppe PacketParseError) Error() string {
@@ -12,18 +25,14 @@ func (ppe PacketParseError) Error() string {
 }
 
 type Packet interface {
+    GameReaderWriter
     Handle(Commander)
-    Unmarshal([]byte) error
 }
 
 type Client struct {
     com Commander
     outgoing chan []byte
     incoming chan []byte
-}
-
-type GameWriter interface {
-    MarshalGame() []byte
 }
 
 type Commander interface {
@@ -41,7 +50,7 @@ func parsePacket(packet []byte) (*Packet, error) {
     if packetStruct == nil {
         return nil, PacketParseError(id)
     }
-    err := packetStruct.Unmarshal(data)
+    err := packetStruct.UnmarshalGame(data)
     return &packetStruct, err
 }
 

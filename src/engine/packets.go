@@ -15,9 +15,18 @@ func (packet *LoginPacket) Handle(comm Commander) {
         packet.Username, packet.Token)
 }
 
-func (packet *LoginPacket) Unmarshal(data []byte) error {
+func (packet *LoginPacket) UnmarshalGame(data []byte) error {
     err := json.Unmarshal(data, &packet)
     return err
+}
+
+func (packet *LoginPacket) MarshalGame() []byte {
+    p, err := json.Marshal(packet)
+    if err != nil {
+        applog.Criticalf("Error marshalling packet. %s", err)
+        panic(err)
+    }
+    return p
 }
 
 func initializePacketStructures() map[byte] Packet {
