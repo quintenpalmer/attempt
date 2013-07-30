@@ -2,32 +2,7 @@ package engine
 
 import (
     "cgl.tideland.biz/applog"
-    "fmt"
 )
-
-type GameReader interface {
-    UnmarshalGame([]byte) error
-}
-
-type GameWriter interface {
-    MarshalGame() []byte
-}
-
-type GameReaderWriter interface {
-    GameReader
-    GameWriter
-}
-
-type PacketParseError byte
-
-func (ppe PacketParseError) Error() string {
-    return fmt.Sprintf("Invalid packet id: %d", ppe)
-}
-
-type Packet interface {
-    GameReaderWriter
-    Handle(Commander)
-}
 
 type Client struct {
     com Commander
@@ -48,7 +23,7 @@ func parsePacket(packet []byte) (*Packet, error) {
     data := packet[1:]
     packetStruct := packetStructs[id]
     if packetStruct == nil {
-        return nil, PacketParseError(id)
+        return nil, InvalidPacketIdError(id)
     }
     err := packetStruct.UnmarshalGame(data)
     return &packetStruct, err

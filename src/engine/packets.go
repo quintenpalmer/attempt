@@ -3,7 +3,19 @@ package engine
 import (
     "cgl.tideland.biz/applog"
     "encoding/json"
+    "fmt"
 )
+
+type Packet interface {
+    GameReaderWriter
+    Handle(Commander)
+}
+
+type InvalidPacketIdError byte
+
+func (ppe InvalidPacketIdError) Error() string {
+    return fmt.Sprintf("Invalid packet id: %d", ppe)
+}
 
 type LoginPacket struct {
     Username string
