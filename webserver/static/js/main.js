@@ -13,6 +13,11 @@ $(document).ready(function () {
 
 });
 
+// Byte String -> Boolean
+function sendPacket(id, data) {
+    return conn.send(String.fromCharCode(id) + data);
+}
+
 function sendit() {
-    console.log(conn.send('{"msg": "hi"}'));
+    console.log(sendPacket(1, '{"msg": "hi"}'));
 }

@@ -2,8 +2,19 @@ package engine
 
 import (
     "cgl.tideland.biz/applog"
-    "encoding/json"
+    "fmt"
 )
+
+type PacketParseError byte
+
+func (ppe PacketParseError) Error() string {
+    return fmt.Sprintf("Invalid packet id: %d", ppe)
+}
+
+type Packet interface {
+    Handle(Commander)
+    Unmarshal([]byte) error
+}
 
 type Client struct {
     com Commander
@@ -23,16 +34,26 @@ func MakeClient() *Client {
     return &Client{ nil, make(chan [] byte), make(chan [] byte) }
 }
 
+func parsePacket(packet []byte) (*Packet, error) {
+    id := packet[0]
+    data := packet[1:]
+    packetStruct := packetStructs[id]
+    if packetStruct == nil {
+        return nil, PacketParseError(id)
+    }
+    err := packetStruct.Unmarshal(data)
+    return &packetStruct, err
+}
+
 func (c *Client) read() {
     for packet := range c.incoming {
         applog.Debugf("Received packet from client: %s", packet)
-        jsonValues := make(map[string]interface{})
-        err := json.Unmarshal(packet, &jsonValues)
+        packetStruct, err := parsePacket(packet)
         if err != nil {
             applog.Criticalf("Error Unmarshalling message. %s", err)
-            panic(err)
+            continue
         }
-        c.com.HandleCommand(jsonValues)
+        (*packetStruct).Handle(c.com)
     }
 }
 
