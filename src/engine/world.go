@@ -13,11 +13,14 @@ var world = World {
     make(chan *Client),
 }
 
+type WorldUpdateFunc func (*World)
+
 type World struct {
     players map[string] *Player
 
     register chan *connection
     unregister chan *Client
+    update chan *WorldUpdateFunc
 }
 
 func (w *World) StartPlayerLogin(name, token string) bool {
@@ -39,6 +42,11 @@ func (w *World) GetPlayer(name string) (*Player, bool) {
     }
 }
 
+func (w *World) Start() {
+    go HandleConnections()
+    go UpdateLoop()
+}
+
 func (w *World) HandleConnections() {
     for conn := range w.register {
         applog.Debugf("Received request to register new player")
@@ -57,5 +65,11 @@ func (w *World) HandleConnections() {
 func (w *World) Broadcast(payload GameWriter) {
     for _, player := range w.players {
         player.write(payload)
+    }
+}
+
+func (w *World) UpdateLoop() {
+    for updateFunction := range w.update {
+        updateFunction(w)
     }
 }

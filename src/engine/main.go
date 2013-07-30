@@ -11,7 +11,7 @@ func Main() {
     flag.Parse()
     setupLogger(*logLevel)
 
-    go world.HandleConnections()
+    world.Start()
     http.HandleFunc("/ws", serveWs)
     applog.Infof("Starting websocket listener on port 8888")
     http.ListenAndServe(":8888", nil)
