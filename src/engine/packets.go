@@ -2,7 +2,6 @@ package engine
 
 import (
     "cgl.tideland.biz/applog"
-    "encoding/json"
     "fmt"
 )
 
@@ -28,17 +27,11 @@ func (packet *LoginPacket) Handle(comm Commander) {
 }
 
 func (packet *LoginPacket) UnmarshalGame(data []byte) error {
-    err := json.Unmarshal(data, &packet)
-    return err
+    return Deserialize(data, &packet)
 }
 
 func (packet *LoginPacket) MarshalGame() []byte {
-    p, err := json.Marshal(packet)
-    if err != nil {
-        applog.Criticalf("Error marshalling packet. %s", err)
-        panic(err)
-    }
-    return p
+    return Serialize(packet)
 }
 
 func initializePacketStructures() map[byte] Packet {

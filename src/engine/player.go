@@ -1,8 +1,6 @@
 package engine
 
 import (
-    "cgl.tideland.biz/applog"
-    "encoding/json"
     "vector"
 )
 
@@ -80,10 +78,5 @@ func (p *Player) HandleCommand(command map[string]interface{}) {
 }
 
 func (p *Player) MarshalGame() []byte {
-    packet, err := json.Marshal(p)
-    if err != nil {
-        applog.Criticalf("Error marshalling response. %s", err)
-        panic(err)
-    }
-    return packet
+    return Serialize(p)
 }
