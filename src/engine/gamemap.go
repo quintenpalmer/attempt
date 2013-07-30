@@ -8,9 +8,10 @@ type GameMap struct {
     width uint
     height uint
     grid [][] *Entity
+    worldPosition vector.Vector2
 }
 
-func MakeGameMap(width, height uint) *GameMap {
+func MakeGameMap(width, height uint, pos vector.Vector2) *GameMap {
     grid := make([][] *Entity, width)
     for x := range grid {
         grid[x] = make([]*Entity, height)
@@ -19,6 +20,7 @@ func MakeGameMap(width, height uint) *GameMap {
         width,
         height,
         grid,
+        pos,
     }
 }
 

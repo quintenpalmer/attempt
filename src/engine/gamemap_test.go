@@ -7,7 +7,7 @@ import (
 )
 
 var (
-    initMap = MakeGameMap(100, 100)
+    initMap = MakeGameMap(100, 100, vector.Vector2{0, 0})
 )
 
 func TestMakeGameMap(t *testing.T) {
