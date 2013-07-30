@@ -53,3 +53,9 @@ func (w *World) HandleConnections() {
         })
     }
 }
+
+func (w *World) Broadcast(payload GameWriter) {
+    for _, player := range w.players {
+        player.write(payload)
+    }
+}

@@ -80,3 +80,7 @@ func (p *Player) HandleCommand(command map[string]interface{}) {
 func (p *Player) MarshalGame() []byte {
     return Serialize(p)
 }
+
+func (p *Player) write(payload GameWriter) {
+    p.client.write(payload)
+}
