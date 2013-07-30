@@ -34,3 +34,15 @@ func CheckFalse(t *testing.T, x Any) {
         Failure(t, x, "== true")
     }
 }
+
+func CheckNil(t *testing.T, x Any) {
+    if x == nil {
+        Failure(t, x, "!= nil")
+    }
+}
+
+func CheckNotNil(t *testing.T, x Any) {
+    if x == nil {
+        Failure(t, x, "== nil")
+    }
+}
