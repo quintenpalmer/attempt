@@ -10,5 +10,5 @@ func TestParsePacket(t *testing.T) {
     str := `{"Username":"hello","Token": "world"}`
     b := append([]byte{0}, str...)
     parsedLogin, _ := parsePacket(b)
-    unittest.CheckEqual(t, login, *parsedLogin)
+    unittest.CheckDeepEqual(t, Packet(&login), *parsedLogin)
 }

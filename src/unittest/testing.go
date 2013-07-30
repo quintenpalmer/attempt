@@ -2,6 +2,7 @@ package unittest
 
 import (
     "testing"
+    "reflect"
 )
 
 type Any interface{}
@@ -44,5 +45,17 @@ func CheckNil(t *testing.T, x Any) {
 func CheckNotNil(t *testing.T, x Any) {
     if x == nil {
         Failure(t, x, "== nil")
+    }
+}
+
+func CheckDeepEqual(t *testing.T, x, y Any) {
+    if !reflect.DeepEqual(x, y) {
+        Failure(t, x, "!=", y)
+    }
+}
+
+func CheckDeepNotEqual(t *testing.T, x, y Any) {
+    if reflect.DeepEqual(x, y) {
+        Failure(t, x, "==", y)
     }
 }
