@@ -7,13 +7,13 @@ import (
 type WorldMap struct {
     width uint
     height uint
-    grid [][] *GameMap
+    grid [][] *GameChunk
 }
 
 func MakeWorldMap(width, height uint) *WorldMap {
-    grid := make([][] *GameMap, width)
+    grid := make([][] *GameChunk, width)
     for x := range grid {
-        grid[x] = make([]*GameMap, height)
+        grid[x] = make([]*GameChunk, height)
     }
     return &WorldMap {
         width,
@@ -22,12 +22,12 @@ func MakeWorldMap(width, height uint) *WorldMap {
     }
 }
 
-func (wm *WorldMap) SetGameMap(pos vector.Vector2, gm *GameMap) {
+func (wm *WorldMap) SetGameChunk(pos vector.Vector2, gm *GameChunk) {
     x, y := pos.Values()
     wm.grid[x][y] = gm
 }
 
-func (wm *WorldMap) GetGameMap(pos vector.Vector2) *GameMap {
+func (wm *WorldMap) GetGameChunk(pos vector.Vector2) *GameChunk {
     x, y := pos.Values()
     return wm.grid[x][y]
 }
