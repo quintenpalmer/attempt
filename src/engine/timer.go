@@ -10,3 +10,14 @@ func Timer(waitTime time.Duration, thunk func()) {
         thunk()
     }()
 }
+
+func RepeatingTimer(waitTime time.Duration, boolFunc func() bool) {
+    go func () {
+        for {
+            time.Sleep(waitTime)
+            if boolFunc() {
+                return
+            }
+        }
+    }()
+}
