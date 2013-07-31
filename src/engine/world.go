@@ -3,25 +3,39 @@ package engine
 import (
     "cgl.tideland.biz/applog"
     "io"
+    "time"
     "vector"
 )
 
+var (
+    PLAYER_UPDATE_TIMER, _ = time.ParseDuration("500ms")
+)
+
 // TODO: Make this a non-global variable
-var world = World {
-    make(map [string] *Player),
-    make(chan *connection),
-    make(chan *Client),
-    make(chan WorldUpdateFunc),
-}
+var world = MakeWorld(10, 10)
 
 type WorldUpdateFunc func (*World)
 
 type World struct {
     players map[string] *Player
+    worldMap *WorldMap
 
     register chan *connection
     unregister chan *Client
     update chan WorldUpdateFunc
+}
+
+func MakeWorld(width, height uint) *World {
+    world := &World {
+        make(map [string] *Player),
+        MakeWorldMap(width, height),
+        make(chan *connection),
+        make(chan *Client),
+        make(chan WorldUpdateFunc),
+    }
+    gm := MakeGameChunk(width, height, vector.Vector2{0, 0})
+    world.worldMap.SetGameChunk(vector.Vector2{0, 0}, gm)
+    return world
 }
 
 func (w *World) StartPlayerLogin(name, token string) bool {
@@ -48,6 +62,19 @@ func (w *World) Start() {
     go w.UpdateLoop()
 }
 
+func (w *World) StartPlayerTimers(p *Player) {
+    mapUpdate := func() bool {
+        p.write(MakeMapPacket(w.worldMap.grid))
+        return p.IsOnline()
+    }
+    playerUpdate := func() bool {
+        p.write(MakePlayerPacket(p))
+        return p.IsOnline()
+    }
+    RepeatingTimer(PLAYER_UPDATE_TIMER, mapUpdate)
+    RepeatingTimer(PLAYER_UPDATE_TIMER, playerUpdate)
+}
+
 func (w *World) HandleConnections() {
     for conn := range w.register {
         applog.Debugf("Received request to register new player")
@@ -58,6 +85,7 @@ func (w *World) HandleConnections() {
             go conn.writePump(p.client)
             go conn.readPump(p.client)
             go p.client.read()
+            w.StartPlayerTimers(p)
             return true, nil
         })
     }

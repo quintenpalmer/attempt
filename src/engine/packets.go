@@ -34,6 +34,35 @@ func (packet *LoginPacket) MarshalGame() []byte {
     return Serialize(packet)
 }
 
+type MapPacket struct {
+    Chunks []*GameChunk
+}
+
+//TODO: Get chunks visible to player
+func MakeMapPacket(chunks [][]*GameChunk) *MapPacket {
+    packetChunks := make([]*GameChunk, 1)
+    packetChunks[0] = chunks[0][0]
+    return &MapPacket{ packetChunks }
+}
+
+func (packet *MapPacket) MarshalGame() []byte {
+    return Serialize(packet)
+}
+
+type PlayerPacket struct {
+    x int
+    y int
+    name string
+}
+
+func MakePlayerPacket(p *Player) *PlayerPacket {
+    return &PlayerPacket{ p.Position.X, p.Position.Y, p.name }
+}
+
+func (packet *PlayerPacket) MarshalGame() []byte {
+    return Serialize(packet)
+}
+
 func initializePacketStructures() map[byte] Packet {
     structs := make(map [byte] Packet)
     structs[0] = new(LoginPacket)
