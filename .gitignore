@@ -12,3 +12,7 @@ bin
 
 # Compiled python files
 *.pyc
+
+# libraries
+src/github.com
+src/cgl.tideland.biz
