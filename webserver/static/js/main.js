@@ -13,7 +13,6 @@ $(document).ready(function () {
         console.log("received : " + evt.data);
         //handlePacket(evt.data)
     }
-
 });
 
 //---- Packet Ids
@@ -36,6 +35,7 @@ function sendPacket(id, data) {
 }
 
 function sendit() {
+	draw_square(2,2);
     console.log(sendPacket(1, { msg: "hi" }));
 }
 
