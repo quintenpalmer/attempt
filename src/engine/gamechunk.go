@@ -45,6 +45,5 @@ func (gm *GameChunk) MarshalGame() []byte {
 }
 
 func (gm *GameChunk) UnmarshalGame(data []byte) error {
-    err := Deserialize(data, gm)
-    return err
+    return Deserialize(data, gm)
 }
