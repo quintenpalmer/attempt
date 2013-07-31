@@ -5,16 +5,22 @@ import (
 )
 
 type GameChunk struct {
-    width uint
-    height uint
-    grid [][] *Entity
-    worldPosition vector.Vector2
+    Width uint
+    Height uint
+    Grid [][] *Entity
+    WorldPosition vector.Vector2
 }
 
 func MakeGameChunk(width, height uint, pos vector.Vector2) *GameChunk {
     grid := make([][] *Entity, width)
     for x := range grid {
         grid[x] = make([]*Entity, height)
+    }
+    for y := uint(0); y < height; y++ {
+        for x := uint(0); x < width; x++ {
+            v := vector.Vector2{int(x), int(y)}
+            grid[x][y] = &Entity{0, v}
+        }
     }
     return &GameChunk {
         width,
@@ -25,11 +31,20 @@ func MakeGameChunk(width, height uint, pos vector.Vector2) *GameChunk {
 }
 
 func (gm *GameChunk) AddStaticEntity(e *Entity) {
-    x, y := e.position.Values()
-    gm.grid[x][y] = e
+    x, y := e.Position.Values()
+    gm.Grid[x][y] = e
 }
 
 func (gm *GameChunk) GetEntityAtPosition(v vector.Vector2) *Entity {
     x, y := v.Values()
-    return gm.grid[x][y]
+    return gm.Grid[x][y]
+}
+
+func (gm *GameChunk) MarshalGame() []byte {
+    return Serialize(gm)
+}
+
+func (gm *GameChunk) UnmarshalGame(data []byte) error {
+    err := Deserialize(data, gm)
+    return err
 }

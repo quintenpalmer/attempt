@@ -12,5 +12,5 @@ var (
 
 func TestEntityMove(t *testing.T) {
     simpleMover.Move(vector.Vector2{5, 5})
-    unittest.CheckEqual(t, simpleMover.position, vector.Vector2{10, 10})
+    unittest.CheckEqual(t, simpleMover.Position, vector.Vector2{10, 10})
 }

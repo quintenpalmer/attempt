@@ -1,6 +1,7 @@
 package engine
 
 import (
+    // "encoding/json"
     "vector"
 )
 
@@ -9,8 +10,8 @@ This file contains type definitions for the high level entity definitions.
 */
 
 type Entity struct {
-    id uint
-    position vector.Vector2
+    Id uint
+    Position vector.Vector2
 }
 
 type Moveable interface {
@@ -22,7 +23,7 @@ type MoveableEntity struct {
 }
 
 func (me *MoveableEntity) Move(v vector.Vector2) {
-    me.position.Add(v)
+    me.Position.Add(v)
 }
 
 type Named struct {
