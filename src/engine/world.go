@@ -11,6 +11,7 @@ var world = World {
     make(map [string] *Player),
     make(chan *connection),
     make(chan *Client),
+    make(chan WorldUpdateFunc),
 }
 
 type WorldUpdateFunc func (*World)
@@ -20,7 +21,7 @@ type World struct {
 
     register chan *connection
     unregister chan *Client
-    update chan *WorldUpdateFunc
+    update chan WorldUpdateFunc
 }
 
 func (w *World) StartPlayerLogin(name, token string) bool {
@@ -43,8 +44,8 @@ func (w *World) GetPlayer(name string) (*Player, bool) {
 }
 
 func (w *World) Start() {
-    go HandleConnections()
-    go UpdateLoop()
+    go w.HandleConnections()
+    go w.UpdateLoop()
 }
 
 func (w *World) HandleConnections() {
