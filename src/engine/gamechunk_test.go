@@ -17,16 +17,19 @@ func TestMakeGameChunk(t *testing.T) {
     unittest.CheckEqual(t, initChunk.Height, uint(10))
     for x := 0; x < 10; x++ {
         for y := 0; y < 10; y++ {
-            unittest.CheckFalse(t, initChunk.Grid[x][y])
+            unittest.CheckEqual(t, initChunk.Grid[x][y], TILE_EMPTY)
         }
     }
 }
 
-func TestAddStaticEntity(t *testing.T) {
+func TestSetTile(t *testing.T) {
     v := vector.Vector2{5, 5}
-    e := &Entity{5, v}
-    initChunk.AddStaticEntity(e)
-    unittest.CheckEqual(t, initChunk.GetEntityAtPosition(v), e)
+    x, y := v.Values()
+    initChunk.SetTileVec(v, TILE_GRASS)
+    unittest.CheckEqual(t, initChunk.GetTileVec(v), TILE_GRASS)
+
+    initChunk.SetTile(x, y, TILE_EMPTY)
+    unittest.CheckEqual(t, initChunk.GetTile(x, y,), TILE_EMPTY)
 }
 
 func TestChunkSerialization(t *testing.T) {
