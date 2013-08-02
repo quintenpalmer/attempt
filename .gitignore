@@ -16,3 +16,6 @@ bin
 # libraries
 src/github.com
 src/cgl.tideland.biz
+
+# sqlite3 database file
+webserver/djangodb.db
