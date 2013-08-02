@@ -5,13 +5,13 @@ var canvasName = "mainCanvas";
 var canvas;
 var context;
 
-$(document).ready(function () {
+function startCanvas() {
 	canvas = document.getElementById(canvasName);
 	context = canvas.getContext("2d");
 	block_width = canvas.width/size;
 	block_height = canvas.height/size;
 	draw_grid();
-});
+}
 
 function draw_square(x,y) {
 	context.fillStyle="#996611";
