@@ -9,18 +9,26 @@ function startNetworking() {
         console.log("connection closed");
     }
     conn.onmessage = function(evt) {
-        console.log("received : " + evt.data);
-        //handlePacket(evt.data)
+        handlePacket(evt.data)
    }
 }
 
 //---- Packet Ids
 var LOGIN_PID = 0;
 
+function mapUpdate() {
+
+}
+
+function playerUpdate() {
+
+}
+
 var PACKET_HANDLERS = {};
 function initializePacketHandlers() {
-    //PACKET_HANDLERS[PID] = callback_function;
+    PACKET_HANDLERS[LOGIN_PID] = mapUpdate;
 }
+
 //--- Packet Senders
 
 // String String -> Bool
@@ -44,6 +52,7 @@ function sendit() {
 function handlePacket(packet) {
     var pid = packet.charCodeAt(0);
     var data = packet.substring(1);
+    console.log("received packet " + pid + ": " + data);
     handler = PACKET_HANDLERS[pid];
     return handler(data);
 }

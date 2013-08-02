@@ -3,6 +3,7 @@ package engine
 import (
     "cgl.tideland.biz/applog"
     "fmt"
+    "reflect"
 )
 
 type Packet interface {
@@ -14,6 +15,11 @@ type InvalidPacketIdError byte
 
 func (ppe InvalidPacketIdError) Error() string {
     return fmt.Sprintf("Invalid packet id: %d", ppe)
+}
+
+func InvalidPacketPanic(packet Packet) {
+    id := packetIds[reflect.TypeOf(packet)]
+    panic(fmt.Sprintf("Packet %d should not be sent to the server.", id))
 }
 
 type LoginPacket struct {
@@ -49,6 +55,14 @@ func (packet *MapPacket) MarshalGame() []byte {
     return Serialize(packet)
 }
 
+func (packet *MapPacket) UnmarshalGame(data []byte) error {
+    return Deserialize(data, &packet)
+}
+
+func (packet *MapPacket) Handle(_ Commander) {
+    InvalidPacketPanic(packet)
+}
+
 type PlayerPacket struct {
     X int
     Y int
@@ -63,12 +77,27 @@ func (packet *PlayerPacket) MarshalGame() []byte {
     return Serialize(packet)
 }
 
-func initializePacketStructures() map[byte] Packet {
-    structs := make(map [byte] Packet)
-    structs[0] = new(LoginPacket)
-    return structs
+func (packet *PlayerPacket) UnmarshalGame(data []byte) error {
+    return Deserialize(data, &packet)
+}
+
+func (packet *PlayerPacket) Handle(_ Commander) {
+    InvalidPacketPanic(packet)
+}
+
+func initializePacketStructures() (map[byte] Packet, map[reflect.Type] byte) {
+    idsToStructs := make(map [byte] Packet)
+    idsToStructs[0] = new(LoginPacket)
+    idsToStructs[1] = new(PlayerPacket)
+    idsToStructs[2] = new(MapPacket)
+    structsToIds := make(map [reflect.Type] byte)
+    for id, initStruct := range(idsToStructs) {
+        tipe := reflect.TypeOf(initStruct)
+        structsToIds[tipe] = id
+    }
+    return idsToStructs, structsToIds
 }
 
 var (
-    packetStructs = initializePacketStructures()
+    packetStructs, packetIds = initializePacketStructures()
 )

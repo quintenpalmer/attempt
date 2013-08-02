@@ -2,6 +2,7 @@ package engine
 
 import (
     "cgl.tideland.biz/applog"
+    "reflect"
 )
 
 type Client struct {
@@ -42,7 +43,9 @@ func (c *Client) read() {
 }
 
 func (c *Client) write(payload GameWriter) {
-    packet := payload.MarshalGame()
+    id := packetIds[reflect.TypeOf(payload)]
+    packet := append([]byte{id}, payload.MarshalGame()...)
+    applog.Debugf("Id: %d", id)
     applog.Debugf("Writing packet to client: %s", packet)
     c.outgoing<- packet
 }
