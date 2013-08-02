@@ -50,9 +50,9 @@ func (packet *MapPacket) MarshalGame() []byte {
 }
 
 type PlayerPacket struct {
-    x int
-    y int
-    name string
+    X int
+    Y int
+    Name string
 }
 
 func MakePlayerPacket(p *Player) *PlayerPacket {
