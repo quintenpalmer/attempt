@@ -2,7 +2,7 @@ Webserver
 =========
 
 Requisites
----------
+----------
 Python  
 Ubuntu  
 
@@ -19,7 +19,16 @@ Ubuntu
 
 Fedora  
 
-    sudo yum install django  
+    sudo yum install django
+    
+Make sure you have sqlite3 installed, via your favorite package manager.
+    
+Database setup
+--------------
+
+The file init_db.sh will create and sync the database for the project then insert 3 users with game tokens.
+It is advised you run the script before running the webserver, and it is required you run the script from
+this webserver/ directory.
 
 Run
 ---
