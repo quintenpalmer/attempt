@@ -14,19 +14,21 @@ function startNetworking() {
 }
 
 //---- Packet Ids
-var LOGIN_PID = 0;
+var PLAYER_UPDATE_PID = 1;
+var MAP_UPDATE_PID = 2;
 
-function mapUpdate() {
-
+function mapUpdate(packet) {
+    drawMap(packet.Chunks[0].Grid);
 }
 
-function playerUpdate() {
+function playerUpdate(packet) {
 
 }
 
 var PACKET_HANDLERS = {};
 function initializePacketHandlers() {
-    PACKET_HANDLERS[LOGIN_PID] = mapUpdate;
+    PACKET_HANDLERS[MAP_UPDATE_PID] = mapUpdate;
+    PACKET_HANDLERS[PLAYER_UPDATE_PID] = playerUpdate;
 }
 
 //--- Packet Senders
@@ -54,5 +56,5 @@ function handlePacket(packet) {
     var data = packet.substring(1);
     console.log("received packet " + pid + ": " + data);
     handler = PACKET_HANDLERS[pid];
-    return handler(data);
+    return handler($.parseJSON(data));
 }
