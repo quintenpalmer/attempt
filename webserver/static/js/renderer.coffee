@@ -1,5 +1,5 @@
-WIDTH = 700
-HEIGHT = 300
+@WIDTH = 700
+@HEIGHT = 300
 stage = new PIXI.Stage 0xEEFFFF
 renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT)
 graphics = new PIXI.Graphics()
@@ -13,6 +13,7 @@ isoTile :: (Num, Num, Num, Num) -> DrawTileFunc
 isoTile = (bgColor, borderColor, w, h) ->
     h_2 = h / 2
     tileFunc = (x, y) ->
+        console.log ("Drawing at " + x + ", " + y)
         graphics.beginFill bgColor
         graphics.lineStyle(1, borderColor, 1)
         graphics.moveTo(x, y)
@@ -42,8 +43,9 @@ animate = () ->
         isoX = x - y
         isoY = (x + y) / 2
         tileType = terrain[i][j]
-        drawTile = tileMethods[tileType]
-        drawTile(xOffset, isoX, isoY)
+        drawTileType = tileMethods[tileType]
+        drawTileType(xOffset + isoX, isoY)
+    graphics.clear()
     for i in [0..terrain.length-1]
         for j in [0..terrain[i].length-1]
             drawTile i, j

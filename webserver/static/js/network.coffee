@@ -14,7 +14,7 @@ PacketHandler = ?(Any) -> Any
 
 mapUpdate :: PacketHandler
 mapUpdate = (packet) ->
-    drawMap(packet.Chunks[0].Grid, 0)
+    drawMap(packet.Chunks[0].Grid, WIDTH / 2)
 
 playerUpdate :: PacketHandler
 playerUpdate = (packet) ->
