@@ -19,3 +19,6 @@ src/cgl.tideland.biz
 
 # sqlite3 database file
 webserver/djangodb.db
+
+# JS files where we compile coffeescript -> JS
+webserver/static/js/*.js
