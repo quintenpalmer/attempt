@@ -25,3 +25,11 @@ these packages with ease:
   - A level based logging system for fun and profit
 - github.com/garyburd/go-websocket/websocket
   - A Go websocket library for communicating with the front end
+
+Running The Server
+==================
+
+Run the game server:
+  - "go run gameserver.go"
+Run the webserver:
+  - See webserver/README.md
