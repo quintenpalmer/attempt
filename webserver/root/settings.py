@@ -162,3 +162,6 @@ LOGGING = {
         },
     }
 }
+
+# remove --contracts to disable contracts
+COFFEESCRIPT_EXECUTABLE = "coffee --contracts"
