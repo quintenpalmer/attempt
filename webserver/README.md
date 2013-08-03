@@ -3,26 +3,15 @@ Webserver
 
 Requisites
 ----------
-Python  
-Ubuntu  
+Python
+Ubuntu
 
-    sudo apt-get install python  
+    sudo apt-get install python python-django django-coffeescript coffee-script sqlite
 
-Fedora  
+Fedora
 
-    sudo yum install python  
+    sudo yum install python python-django django-coffeescript coffee-script sqlite
 
-Django  
-Ubuntu  
-
-    sudo apt-get install python-django  
-
-Fedora  
-
-    sudo yum install django
-    
-Make sure you have sqlite3 installed, via your favorite package manager.
-    
 Database setup
 --------------
 
@@ -33,6 +22,6 @@ this webserver/ directory.
 Run
 ---
 
-    python manage.py runserver 127.0.0.1:8000  
-	cd ..  
-	GOPATH=`pwd` go run gameserver.go  
+    python manage.py runserver 127.0.0.1:8000
+	cd ..
+	GOPATH=`pwd` go run gameserver.go

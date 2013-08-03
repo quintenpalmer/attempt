@@ -83,6 +83,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'coffeescript.finders.CoffeescriptFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -130,6 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'coffeescript'
 )
 
 # A sample logging configuration. The only tangible logging

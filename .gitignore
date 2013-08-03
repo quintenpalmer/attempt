@@ -21,4 +21,4 @@ src/cgl.tideland.biz
 webserver/djangodb.db
 
 # JS files where we compile coffeescript -> JS
-webserver/static/js/*.js
+webserver/COFFEESCRIPT_CACHE
