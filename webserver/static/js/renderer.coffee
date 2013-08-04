@@ -34,8 +34,8 @@ animate = () ->
     renderer.render(stage)
 
 # Any instead of [...Num] because 2d array contracts seem to be broken
-@drawMap :: ([...Any], Num) -> Any
-@drawMap = (terrain, xOffset) ->
+drawMap :: ([...Any], Num) -> Any
+drawMap = (terrain, xOffset) ->
     drawTile :: (Num, Num) -> Any
     drawTile = (i, j) ->
         x = j * tileWidth
@@ -46,11 +46,16 @@ animate = () ->
         drawTileType = tileMethods[tileType]
         drawTileType(xOffset + isoX, isoY)
     graphics.clear()
-    for i in [0..terrain.length-1]
-        for j in [0..terrain[i].length-1]
+    for row, i in terrain
+        for tile, j in row
             drawTile i, j
     requestAnimFrame animate
+
+drawWorld = () ->
+    drawMap @world.grid, (@WIDTH / 2)
+
 
 @startRenderer = () ->
     document.body.appendChild renderer.view
     stage.addChild graphics
+    setInterval drawWorld, 500
