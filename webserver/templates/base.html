@@ -15,6 +15,9 @@
         <script src="{{ STATIC_PREFIX }}{% coffeescript "js/main.coffee" %}" type="text/javascript"></script>
     </head>
     <body>
+        {% if user.is_authenticated %}
+        <a href="/account/logout/">Logout</a>
+        {% endif %}
         <div id="content">
             {% block content%}{% endblock %}
         </div>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Login</h1>
+<form action="" method="post">{% csrf_token %} 
+    {% if failed_login %}
+    <p>The username or password you entered were incorrect</p>
+    {% endif %}
+    <label for="username">Username:</label>
+    <input id="username" type="text" name="username">
+    <label for="password">Password:</label>
+    <input id="password" type="password" name="password">
+    <input type="submit">
+</form>
+{% endblock %}
