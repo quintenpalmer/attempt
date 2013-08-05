@@ -12,6 +12,11 @@ Fedora
 
     sudo yum install python python-django django-coffeescript coffee-script sqlite
 
+It is very possible your package manager will not know about django-coffeescript. If this
+is the case you can install pip, the Python package manager, via your package manager, then run:
+
+    sudo pip install django-coffeescript
+
 Database setup
 --------------
 
