@@ -6,13 +6,9 @@ import (
 )
 
 type Client struct {
-    com Commander
+    player *Player
     outgoing chan []byte
     incoming chan []byte
-}
-
-type Commander interface {
-    HandleCommand(map[string]interface{})
 }
 
 func MakeClient() *Client {
@@ -38,7 +34,7 @@ func (c *Client) read() {
             applog.Criticalf("Error Unmarshalling message. %s", err)
             continue
         }
-        (*packetStruct).Handle(c.com)
+        (*packetStruct).Handle(c.player)
     }
 }
 

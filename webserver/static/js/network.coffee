@@ -8,6 +8,7 @@ conn = new WebSocket ws_addr
 LOGIN_PID = 0
 PLAYER_UPDATE_PID = 1
 MAP_UPDATE_PID = 2
+MOVE_PLAYER_PID = 3
 
 # Packet Handling
 PacketHandler = ?(Any) -> Any
@@ -18,7 +19,9 @@ mapUpdate = (packet) ->
 
 playerUpdate :: PacketHandler
 playerUpdate = (packet) ->
-    console.log("player update")
+    @world.player.x = packet.X
+    @world.player.y = packet.Y
+    @world.player.name = packet.Name
 
 
 PACKET_HANDLERS :: [...(Undefined or PacketHandler)]
@@ -43,13 +46,18 @@ handlePacket = (packet) ->
 
 # Packet Sending
 
-sendLogin :: (Str, Str) -> Any
-sendLogin = (username, token) ->
+@sendMove :: (Num, Num) -> Any
+@sendMove = (dx, dy) ->
+    data = { Dx: dx, Dy: dy }
+    sendPacket(MOVE_PLAYER_PID, data)
+
+@sendLogin :: (Str, Str) -> Any
+@sendLogin = (username, token) ->
     data = { Username: username, Token: token }
     sendPacket(LOGIN_PID, data)
 
-@sendPacket :: (Num, Any) -> Any
-@sendPacket = (id, data) ->
+sendPacket :: (Num, Any) -> Any
+sendPacket = (id, data) ->
     conn.send(String.fromCharCode(id) + JSON.stringify(data))
 
 @sendit = () ->

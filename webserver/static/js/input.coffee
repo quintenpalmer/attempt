@@ -2,6 +2,7 @@ MOVE_AMOUNT = 5
 
 movePlayer :: (Num, Num) -> Any
 movePlayer = (dx, dy) ->
+    sendMove dx, dy
     console.log ("Move: (" + dx + ", " + dy + ")")
 
 moveUp = (event) -> movePlayer(0, -MOVE_AMOUNT)

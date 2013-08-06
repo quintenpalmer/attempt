@@ -4,11 +4,12 @@ import (
     "cgl.tideland.biz/applog"
     "fmt"
     "reflect"
+    "vector"
 )
 
 type Packet interface {
     GameReaderWriter
-    Handle(Commander)
+    Handle(*Player)
 }
 
 type InvalidPacketIdError byte
@@ -27,7 +28,7 @@ type LoginPacket struct {
     Token string
 }
 
-func (packet *LoginPacket) Handle(comm Commander) {
+func (packet *LoginPacket) Handle(comm *Player) {
     applog.Debugf("Login request from %s with token %s",
         packet.Username, packet.Token)
 }
@@ -59,7 +60,7 @@ func (packet *MapPacket) UnmarshalGame(data []byte) error {
     return Deserialize(data, &packet)
 }
 
-func (packet *MapPacket) Handle(_ Commander) {
+func (packet *MapPacket) Handle(_ *Player) {
     InvalidPacketPanic(packet)
 }
 
@@ -81,8 +82,25 @@ func (packet *PlayerPacket) UnmarshalGame(data []byte) error {
     return Deserialize(data, &packet)
 }
 
-func (packet *PlayerPacket) Handle(_ Commander) {
+func (packet *PlayerPacket) Handle(_ *Player) {
     InvalidPacketPanic(packet)
+}
+
+type MovePlayerPacket struct {
+    Dx int
+    Dy int
+}
+
+func (packet *MovePlayerPacket) MarshalGame() []byte {
+    return Serialize(packet)
+}
+
+func (packet *MovePlayerPacket) UnmarshalGame(data []byte) error {
+    return Deserialize(data, &packet)
+}
+
+func (packet *MovePlayerPacket) Handle(player *Player) {
+    player.Move(vector.Vector2{ packet.Dx, packet.Dy })
 }
 
 func initializePacketStructures() (map[byte] Packet, map[reflect.Type] byte) {
@@ -90,6 +108,7 @@ func initializePacketStructures() (map[byte] Packet, map[reflect.Type] byte) {
     idsToStructs[0] = new(LoginPacket)
     idsToStructs[1] = new(PlayerPacket)
     idsToStructs[2] = new(MapPacket)
+    idsToStructs[3] = new(MovePlayerPacket)
     structsToIds := make(map [reflect.Type] byte)
     for id, initStruct := range(idsToStructs) {
         tipe := reflect.TypeOf(initStruct)

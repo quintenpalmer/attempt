@@ -54,6 +54,7 @@ drawMap = (terrain, xOffset, yOffset) ->
 drawWorld = () ->
     xOff = @world.player.x + @WIDTH / 2
     yOff = @world.player.y + @HEIGHT / 2
+    console.log ("coords: " + xOff + ", " + yOff)
     drawMap @world.grid, xOff, yOff
 
 
