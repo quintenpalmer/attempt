@@ -35,7 +35,7 @@ animate = () ->
 
 # Any instead of [...Num] because 2d array contracts seem to be broken
 drawMap :: ([...Any], Num) -> Any
-drawMap = (terrain, xOffset) ->
+drawMap = (terrain, xOffset, yOffset) ->
     drawTile :: (Num, Num) -> Any
     drawTile = (i, j) ->
         x = j * tileWidth
@@ -44,7 +44,7 @@ drawMap = (terrain, xOffset) ->
         isoY = (x + y) / 2
         tileType = terrain[i][j]
         drawTileType = tileMethods[tileType]
-        drawTileType(xOffset + isoX, isoY)
+        drawTileType(xOffset + isoX, yOffset + isoY)
     graphics.clear()
     for row, i in terrain
         for tile, j in row
@@ -52,7 +52,9 @@ drawMap = (terrain, xOffset) ->
     requestAnimFrame animate
 
 drawWorld = () ->
-    drawMap @world.grid, (@WIDTH / 2)
+    xOff = @world.player.x + @WIDTH / 2
+    yOff = @world.player.y + @HEIGHT / 2
+    drawMap @world.grid, xOff, yOff
 
 
 @startRenderer = () ->
