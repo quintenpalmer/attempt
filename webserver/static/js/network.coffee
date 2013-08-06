@@ -8,7 +8,6 @@ conn = new WebSocket ws_addr
 LOGIN_PID = 0
 PLAYER_UPDATE_PID = 1
 MAP_UPDATE_PID = 2
-MOVE_PLAYER_PID = 3
 
 # Packet Handling
 PacketHandler = ?(Any) -> Any
@@ -24,6 +23,7 @@ playerUpdate = (packet) ->
     @world.player.y = packet.Y
     @world.player.name = packet.Name
     @graphics.position = new PIXI.Point x, y
+    console.log("player update")
 
 
 PACKET_HANDLERS :: [...(Undefined or PacketHandler)]
@@ -38,6 +38,12 @@ initializePacketHandlers = () ->
     registerPacketHandler(PLAYER_UPDATE_PID, playerUpdate)
     registerPacketHandler(MAP_UPDATE_PID, mapUpdate)
 
+@userLogin = () ->
+    console.log "Sending login info..."
+    username = $('#username').text()
+    token = $('#token').text()
+    sendLogin(String(username), String(token))
+
 handlePacket :: (Str) -> Any
 handlePacket = (packet) ->
     pid = packet.charCodeAt 0
@@ -48,13 +54,8 @@ handlePacket = (packet) ->
 
 # Packet Sending
 
-@sendMove :: (Num, Num) -> Any
-@sendMove = (dx, dy) ->
-    data = { Dx: dx, Dy: dy }
-    sendPacket(MOVE_PLAYER_PID, data)
-
-@sendLogin :: (Str, Str) -> Any
-@sendLogin = (username, token) ->
+sendLogin :: (Str, Str) -> Any
+sendLogin = (username, token) ->
     data = { Username: username, Token: token }
     sendPacket(LOGIN_PID, data)
 
