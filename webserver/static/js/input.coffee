@@ -18,4 +18,4 @@ kd.LEFT.down(moveLeft)
 kd.RIGHT.down(moveRight)
 
 @startInput = () ->
-    setInterval kd.tick, 100
+    setInterval kd.tick, 40

@@ -16,12 +16,14 @@ PacketHandler = ?(Any) -> Any
 mapUpdate :: PacketHandler
 mapUpdate = (packet) ->
     @world.updateGrid packet.Chunks[0].Grid
+    @world.dirty = true
 
 playerUpdate :: PacketHandler
 playerUpdate = (packet) ->
     @world.player.x = packet.X
     @world.player.y = packet.Y
     @world.player.name = packet.Name
+    @graphics.position = new PIXI.Point x, y
 
 
 PACKET_HANDLERS :: [...(Undefined or PacketHandler)]

@@ -10,6 +10,7 @@ World = ?{
     player: Player
     grid: TileGrid
     updateGrid: (TileGrid) -> Any
+    dirty: Bool
 }
 
 # --- Player ---
@@ -29,6 +30,7 @@ makeWorld = (player) -> {
     grid: []
     updateGrid: (tiles) ->
         this.grid = tiles
+    dirty: false
 }
 
 # --- Global Exported Definitions ---

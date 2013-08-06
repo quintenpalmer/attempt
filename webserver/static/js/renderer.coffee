@@ -2,7 +2,7 @@
 @HEIGHT = 300
 stage = new PIXI.Stage 0xEEFFFF
 renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT)
-graphics = new PIXI.Graphics()
+@graphics = new PIXI.Graphics()
 
 tileHeight = 60
 tileWidth = 60
@@ -52,13 +52,14 @@ drawMap = (terrain, xOffset, yOffset) ->
     requestAnimFrame animate
 
 drawWorld = () ->
-    xOff = @world.player.x + @WIDTH / 2
-    yOff = @world.player.y + @HEIGHT / 2
-    console.log ("coords: " + xOff + ", " + yOff)
-    drawMap @world.grid, xOff, yOff
+    if world.dirty
+        xOff = @world.player.x + @WIDTH / 2
+        yOff = @world.player.y + @HEIGHT / 2
+        console.log ("coords: " + xOff + ", " + yOff)
+        drawMap @world.grid, xOff, yOff
 
 
 @startRenderer = () ->
     document.getElementById('game').appendChild renderer.view
     stage.addChild graphics
-    setInterval drawWorld, 500
+    setInterval drawWorld, 20

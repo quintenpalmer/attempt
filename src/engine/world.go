@@ -62,17 +62,9 @@ func (w *World) Start() {
     go w.UpdateLoop()
 }
 
-func (w *World) StartPlayerTimers(p *Player) {
-    mapUpdate := func() bool {
-        p.write(MakeMapPacket(w.worldMap.grid))
-        return p.IsOnline()
-    }
-    playerUpdate := func() bool {
-        p.write(MakePlayerPacket(p))
-        return p.IsOnline()
-    }
-    RepeatingTimer(PLAYER_UPDATE_TIMER, mapUpdate)
-    RepeatingTimer(PLAYER_UPDATE_TIMER, playerUpdate)
+func (w *World) SendPlayerInitialInfo(p *Player) {
+    p.write(MakeMapPacket(w.worldMap.grid))
+    p.write(MakePlayerPacket(p))
 }
 
 func (w *World) HandleConnections() {
@@ -85,7 +77,7 @@ func (w *World) HandleConnections() {
             go conn.writePump(p.client)
             go conn.readPump(p.client)
             go p.client.read()
-            w.StartPlayerTimers(p)
+            w.SendPlayerInitialInfo(p)
             return true, nil
         })
     }

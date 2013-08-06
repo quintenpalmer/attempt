@@ -101,6 +101,7 @@ func (packet *MovePlayerPacket) UnmarshalGame(data []byte) error {
 
 func (packet *MovePlayerPacket) Handle(player *Player) {
     player.Move(vector.Vector2{ packet.Dx, packet.Dy })
+    player.write(MakePlayerPacket(player))
 }
 
 func initializePacketStructures() (map[byte] Packet, map[reflect.Type] byte) {
