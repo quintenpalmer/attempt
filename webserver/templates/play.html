@@ -1,4 +1,18 @@
 {% extends "base.html" %}
+
+{% block gameheaders %}
+{% load coffeescript %}
+<script src="{{ STATIC_PREFIX }}js/lib/pixi.dev.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}js/lib/keydrown.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}{% coffeescript "js/input.coffee" %}" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}{% coffeescript "js/renderer.coffee" %}" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}{% coffeescript "js/network.coffee" %}" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}{% coffeescript "js/model.coffee" %}" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}{% coffeescript "js/main.coffee" %}" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
 <h1>Attempt</h1>
+<div id="game">
+</div>
 {% endblock %}

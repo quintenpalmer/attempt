@@ -58,6 +58,6 @@ drawWorld = () ->
 
 
 @startRenderer = () ->
-    document.body.appendChild renderer.view
+    document.getElementById('game').appendChild renderer.view
     stage.addChild graphics
     setInterval drawWorld, 500
