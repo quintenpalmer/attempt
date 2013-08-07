@@ -9,7 +9,7 @@ import (
 
 type Packet interface {
     GameReaderWriter
-    Handle(*Player)
+    Handle(*World, *Player, *Client)
 }
 
 type InvalidPacketIdError byte
@@ -28,9 +28,12 @@ type LoginPacket struct {
     Token string
 }
 
-func (packet *LoginPacket) Handle(comm *Player) {
+func (packet *LoginPacket) Handle(world *World, _ *Player, client *Client) {
     applog.Debugf("Login request from %s with token %s",
         packet.Username, packet.Token)
+    player := world.NewPlayer(packet.Username, packet.Token)
+    player.SetClient(client)
+    world.SendPlayerInitialInfo(player)
 }
 
 func (packet *LoginPacket) UnmarshalGame(data []byte) error {
@@ -60,7 +63,7 @@ func (packet *MapPacket) UnmarshalGame(data []byte) error {
     return Deserialize(data, &packet)
 }
 
-func (packet *MapPacket) Handle(_ *Player) {
+func (packet *MapPacket) Handle(_ *World, _ *Player, _ *Client) {
     InvalidPacketPanic(packet)
 }
 
@@ -82,7 +85,7 @@ func (packet *PlayerPacket) UnmarshalGame(data []byte) error {
     return Deserialize(data, &packet)
 }
 
-func (packet *PlayerPacket) Handle(_ *Player) {
+func (packet *PlayerPacket) Handle(_ *World, _ *Player, _ *Client) {
     InvalidPacketPanic(packet)
 }
 
@@ -99,7 +102,7 @@ func (packet *MovePlayerPacket) UnmarshalGame(data []byte) error {
     return Deserialize(data, &packet)
 }
 
-func (packet *MovePlayerPacket) Handle(player *Player) {
+func (packet *MovePlayerPacket) Handle(_ *World, player *Player, _ *Client) {
     player.Move(vector.Vector2{ packet.Dx, packet.Dy })
     player.write(MakePlayerPacket(player))
 }
@@ -117,7 +120,7 @@ func (packet *ChatPacket) UnmarshalGame(data []byte) error {
     return Deserialize(data, &packet)
 }
 
-func (packet *ChatPacket) Handle(_ *Player) {
+func (packet *ChatPacket) Handle(_ *World, _ *Player, _ *Client) {
     world.Broadcast(packet)
 }
 

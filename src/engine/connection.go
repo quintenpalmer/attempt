@@ -61,7 +61,9 @@ func (c *connection) readTemplate(handler func(io.Reader) (bool, error)) {
         case websocket.OpPong:
             c.ws.SetReadDeadline(time.Now().Add(readWait))
         case websocket.OpText:
-            if quit, err := handler(r); quit || err != nil {
+            quit, err := handler(r)
+            applog.Debugf("Leaving read loop?: %s || %s", quit, err)
+            if quit || err != nil {
                 return
             }
         }

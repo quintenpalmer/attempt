@@ -34,7 +34,7 @@ func (c *Client) read() {
             applog.Criticalf("Error Unmarshalling message. %s", err)
             continue
         }
-        (*packetStruct).Handle(c.player)
+        (*packetStruct).Handle(world, c.player, c)
     }
 }
 

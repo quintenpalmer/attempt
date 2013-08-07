@@ -2,7 +2,6 @@ package engine
 
 import (
     "cgl.tideland.biz/applog"
-    "io"
     "time"
     "vector"
 )
@@ -19,6 +18,7 @@ type WorldUpdateFunc func (*World)
 type World struct {
     players map[string] *Player
     worldMap *WorldMap
+    currentId uint
 
     register chan *connection
     unregister chan *Client
@@ -29,6 +29,7 @@ func MakeWorld(width, height uint) *World {
     world := &World {
         make(map [string] *Player),
         MakeWorldMap(width, height),
+        0,
         make(chan *connection),
         make(chan *Client),
         make(chan WorldUpdateFunc),
@@ -57,6 +58,12 @@ func (w *World) GetPlayer(name string) (*Player, bool) {
     }
 }
 
+func (w *World) NewPlayer(name string, token string) *Player {
+    p := MakePlayer(5, name, vector.Vector2{0, 0})
+    w.players[p.name] = p
+    return p
+}
+
 func (w *World) Start() {
     go w.HandleConnections()
     go w.UpdateLoop()
@@ -70,16 +77,10 @@ func (w *World) SendPlayerInitialInfo(p *Player) {
 func (w *World) HandleConnections() {
     for conn := range w.register {
         applog.Debugf("Received request to register new player")
-        conn.readTemplate(func (r io.Reader) (bool, error) {
-            p := MakePlayer(5, "temp-player", vector.Vector2{0, 0})
-            p.SetClient(MakeClient())
-            w.players[p.name] = p
-            go conn.writePump(p.client)
-            go conn.readPump(p.client)
-            go p.client.read()
-            w.SendPlayerInitialInfo(p)
-            return true, nil
-        })
+        client := MakeClient()
+        go conn.writePump(client)
+        go conn.readPump(client)
+        go client.read()
     }
 }
 
@@ -93,4 +94,10 @@ func (w *World) UpdateLoop() {
     for updateFunction := range w.update {
         updateFunction(w)
     }
+}
+
+func (w *World) GetNextId() uint {
+    id := w.currentId
+    w.currentId++
+    return id
 }
