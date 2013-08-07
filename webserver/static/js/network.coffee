@@ -8,6 +8,7 @@ conn = new WebSocket ws_addr
 LOGIN_PID = 0
 PLAYER_UPDATE_PID = 1
 MAP_UPDATE_PID = 2
+MOVE_PLAYER_PID = 3
 
 # Packet Handling
 PacketHandler = ?(Any) -> Any
@@ -54,8 +55,13 @@ handlePacket = (packet) ->
 
 # Packet Sending
 
-sendLogin :: (Str, Str) -> Any
-sendLogin = (username, token) ->
+@sendMove :: (Num, Num) -> Any
+@sendMove = (dx, dy) ->
+    data = { Dx: dx, Dy: dy }
+    sendPacket(MOVE_PLAYER_PID, data)
+
+@sendLogin :: (Str, Str) -> Any
+@sendLogin = (username, token) ->
     data = { Username: username, Token: token }
     sendPacket(LOGIN_PID, data)
 
