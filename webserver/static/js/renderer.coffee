@@ -4,8 +4,8 @@ stage = new PIXI.Stage 0xEEFFFF
 renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT)
 @graphics = new PIXI.Graphics()
 
-tileHeight = 60
-tileWidth = 60
+tileHeight = 30
+tileWidth = 30
 
 DrawTileFunc = ?(Num, Num) -> Any
 
@@ -13,7 +13,6 @@ makeTile :: (Num, Num, Num, Num) -> DrawTileFunc
 makeTile = (bgColor, borderColor, w, h) ->
     h_2 = h / 2
     tileFunc = (x, y) ->
-        console.log ("Drawing at " + x + ", " + y)
         graphics.beginFill bgColor
         graphics.lineStyle(1, borderColor, 1)
         graphics.moveTo(x, y)
@@ -49,15 +48,25 @@ drawMap = (terrain, xOffset, yOffset) ->
             drawTile i, j
     requestAnimFrame animate
 
+stagePlayer :: () -> Any
+stagePlayer = ->
+    console.log "Drawing avatar."
+    avatar = PIXI.Sprite.fromImage(STATIC_PREFIX + 'img/link.png')
+    avatar.position.x = @WIDTH / 2
+    avatar.position.y = @HEIGHT / 2
+    avatar.anchor.x = 0
+    avatar.anchor.y = 0
+    stage.addChild avatar
+    return avatar
+
 drawWorld = () ->
-    if world.dirty
-        xOff = @world.player.x + @WIDTH / 2
-        yOff = @world.player.y + @HEIGHT / 2
-        console.log ("coords: " + xOff + ", " + yOff)
-        drawMap @world.grid, xOff, yOff
+    xOff = @world.player.x + @WIDTH / 2
+    yOff = @world.player.y + @HEIGHT / 2
+    drawMap @world.grid, xOff, yOff
 
 
 @startRenderer = () ->
     document.getElementById('game').appendChild renderer.view
     stage.addChild graphics
+    stagePlayer()
     setInterval drawWorld, 20
