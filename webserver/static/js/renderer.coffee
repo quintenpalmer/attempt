@@ -9,24 +9,24 @@ tileWidth = 60
 
 DrawTileFunc = ?(Num, Num) -> Any
 
-isoTile :: (Num, Num, Num, Num) -> DrawTileFunc
-isoTile = (bgColor, borderColor, w, h) ->
+makeTile :: (Num, Num, Num, Num) -> DrawTileFunc
+makeTile = (bgColor, borderColor, w, h) ->
     h_2 = h / 2
     tileFunc = (x, y) ->
         console.log ("Drawing at " + x + ", " + y)
         graphics.beginFill bgColor
         graphics.lineStyle(1, borderColor, 1)
         graphics.moveTo(x, y)
-        graphics.lineTo(x + w, y + h_2)
+        graphics.lineTo(x + w, y)
+        graphics.lineTo(x + w, y + h)
         graphics.lineTo(x, y + h)
-        graphics.lineTo(x - w, y + h_2)
         graphics.lineTo(x, y)
         graphics.endFill()
 
 # Tile Functions
-grass = isoTile(0x80CF5A, 0x339900, tileWidth, tileHeight);
-dirt = isoTile(0x96712F, 0x403014, tileWidth, tileHeight);
-water = isoTile(0x85b9bb, 0x476263, tileWidth, tileHeight);
+grass = makeTile(0x80CF5A, 0x339900, tileWidth, tileHeight);
+dirt = makeTile(0x96712F, 0x403014, tileWidth, tileHeight);
+water = makeTile(0x85b9bb, 0x476263, tileWidth, tileHeight);
 empty = () -> {};
 tileMethods = [grass, dirt, water, empty];
 
@@ -40,11 +40,9 @@ drawMap = (terrain, xOffset, yOffset) ->
     drawTile = (i, j) ->
         x = j * tileWidth
         y = i * tileHeight
-        isoX = x - y
-        isoY = (x + y) / 2
         tileType = terrain[i][j]
         drawTileType = tileMethods[tileType]
-        drawTileType(xOffset + isoX, yOffset + isoY)
+        drawTileType(xOffset + x, yOffset + y)
     graphics.clear()
     for row, i in terrain
         for tile, j in row
