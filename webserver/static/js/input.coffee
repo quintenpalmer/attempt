@@ -1,3 +1,13 @@
+initializeEventHandlers = () ->
+    console.log("Setting up event handlers...")
+    $('#chat_send').click(handleChat)
+
+handleChat = () ->
+    username = $('#username').text()
+    message = $('#chat_message').val()
+    sendChat(username, message)
+    $('#chat_message').val("")
+
 MOVE_AMOUNT = 5
 
 movePlayer :: (Num, Num) -> Any
@@ -17,4 +27,5 @@ kd.LEFT.down(moveLeft)
 kd.RIGHT.down(moveRight)
 
 @startInput = () ->
+    initializeEventHandlers()
     setInterval kd.tick, 40

@@ -13,6 +13,7 @@ makeTile :: (Num, Num, Num, Num) -> DrawTileFunc
 makeTile = (bgColor, borderColor, w, h) ->
     h_2 = h / 2
     tileFunc = (x, y) ->
+        # console.log ("Drawing at " + x + ", " + y)
         graphics.beginFill bgColor
         graphics.lineStyle(1, borderColor, 1)
         graphics.moveTo(x, y)

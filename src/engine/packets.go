@@ -104,12 +104,30 @@ func (packet *MovePlayerPacket) Handle(player *Player) {
     player.write(MakePlayerPacket(player))
 }
 
+type ChatPacket struct {
+    Username string
+    Message string
+}
+
+func (packet *ChatPacket) MarshalGame() []byte {
+    return Serialize(packet)
+}
+
+func (packet *ChatPacket) UnmarshalGame(data []byte) error {
+    return Deserialize(data, &packet)
+}
+
+func (packet *ChatPacket) Handle(_ *Player) {
+    world.Broadcast(packet)
+}
+
 func initializePacketStructures() (map[byte] Packet, map[reflect.Type] byte) {
     idsToStructs := make(map [byte] Packet)
     idsToStructs[0] = new(LoginPacket)
     idsToStructs[1] = new(PlayerPacket)
     idsToStructs[2] = new(MapPacket)
     idsToStructs[3] = new(MovePlayerPacket)
+    idsToStructs[4] = new(ChatPacket)
     structsToIds := make(map [reflect.Type] byte)
     for id, initStruct := range(idsToStructs) {
         tipe := reflect.TypeOf(initStruct)

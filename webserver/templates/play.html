@@ -13,8 +13,12 @@
 
 {% block content %}
 <h1>Attempt</h1>
-<div id="game">
-</div>
+<div id="game"></div>
+<textarea id="chat_window" rows="10" cols="100" readonly>
+</textarea>
+<br>
+<input type="text" id="chat_message" style="width: 400px;">
+<button id="chat_send">Send</button>
 <div style="display: none;">
     <div id="username">{{ username }}</div>
     <div id="token">{{ token }}</div>

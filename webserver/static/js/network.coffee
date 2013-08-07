@@ -9,6 +9,7 @@ LOGIN_PID = 0
 PLAYER_UPDATE_PID = 1
 MAP_UPDATE_PID = 2
 MOVE_PLAYER_PID = 3
+CHAT_PID = 4
 
 # Packet Handling
 PacketHandler = ?(Any) -> Any
@@ -23,6 +24,17 @@ playerUpdate = (packet) ->
     @world.player.x = packet.X
     @world.player.y = packet.Y
     @world.player.name = packet.Name
+    @graphics.position = new PIXI.Point x, y
+    console.log("player update")
+
+chatUpdate :: PacketHandler
+chatUpdate = (packet) ->
+    console.log("Chat Packet received")
+    chatString = "<" + packet.Username + "> :: " + packet.Message
+    chatWindow = $('#chat_window')
+    chatWindow.val(chatWindow.val() + '\n' + chatString)
+    chatWindow.scrollTop(chatWindow[0].scrollHeight - chatWindow.height())
+
 
 PACKET_HANDLERS :: [...(Undefined or PacketHandler)]
 PACKET_HANDLERS = (undefined for i in [0..256])
@@ -35,8 +47,9 @@ initializePacketHandlers = () ->
     console.log "Initializing packet handlers..."
     registerPacketHandler(PLAYER_UPDATE_PID, playerUpdate)
     registerPacketHandler(MAP_UPDATE_PID, mapUpdate)
+    registerPacketHandler(CHAT_PID, chatUpdate)
 
-@userLogin = () ->
+userLogin = () ->
     console.log "Sending login info..."
     username = $('#username').text()
     token = $('#token').text()
@@ -62,6 +75,11 @@ handlePacket = (packet) ->
     data = { Username: username, Token: token }
     sendPacket(LOGIN_PID, data)
 
+@sendChat :: (Str, Str) -> Any
+@sendChat = (username, message) ->
+    data = { Username: username, Message: message }
+    sendPacket(CHAT_PID, data)
+
 sendPacket :: (Num, Any) -> Any
 sendPacket = (id, data) ->
     conn.send(String.fromCharCode(id) + JSON.stringify(data))
@@ -76,3 +94,5 @@ sendPacket = (id, data) ->
         console.log("Connection closed.")
     conn.onmessage = (evt) ->
         handlePacket(evt.data)
+    conn.onopen = (evt) ->
+        userLogin()
