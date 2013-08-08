@@ -24,8 +24,6 @@ playerUpdate = (packet) ->
     @world.player.x = packet.X
     @world.player.y = packet.Y
     @world.player.name = packet.Name
-    @graphics.position = new PIXI.Point x, y
-    console.log("player update")
 
 chatUpdate :: PacketHandler
 chatUpdate = (packet) ->
