@@ -14,6 +14,8 @@
     </head>
     <body>
         {% if user.is_authenticated %}
+        <span>Logged in as <b>{{ username }}</b></span>
+        <br/>
         <a href="/account/logout/">Logout</a>
         {% endif %}
         <div id="content">
