@@ -67,6 +67,7 @@ func (w *World) NewPlayer(name string, token string) *Player {
 func (w *World) Start() {
     go w.HandleConnections()
     go w.UpdateLoop()
+    go w.HandleShutdown()
 }
 
 func (w *World) SendPlayerInitialInfo(p *Player) {
@@ -81,6 +82,13 @@ func (w *World) HandleConnections() {
         go conn.writePump(client)
         go conn.readPump(client)
         go client.read()
+    }
+}
+
+func (w *World) HandleShutdown() {
+    for client := range w.unregister {
+        applog.Debugf("Client %s logging out", client)
+
     }
 }
 

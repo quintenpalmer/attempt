@@ -37,6 +37,10 @@ chatUpdate = (packet) ->
 PACKET_HANDLERS :: [...(Undefined or PacketHandler)]
 PACKET_HANDLERS = (undefined for i in [0..256])
 
+onUnloadHandler = () ->
+    conn.onclose = () ->
+    conn.close()
+
 registerPacketHandler :: (Num, PacketHandler) -> Any
 registerPacketHandler = (id, callback) ->
     PACKET_HANDLERS[id] = callback
@@ -94,3 +98,5 @@ sendPacket = (id, data) ->
         handlePacket(evt.data)
     conn.onopen = (evt) ->
         userLogin()
+    window.onbeforeunload = (evt) ->
+        onUnloadHandler()
