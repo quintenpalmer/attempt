@@ -74,7 +74,7 @@ type PlayerPacket struct {
 }
 
 func MakePlayerPacket(p *Player) *PlayerPacket {
-    return &PlayerPacket{ p.Position.X, p.Position.Y, p.name }
+    return &PlayerPacket{ p.Position.X, p.Position.Y, p.Name }
 }
 
 func (packet *PlayerPacket) MarshalGame() []byte {

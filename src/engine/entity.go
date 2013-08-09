@@ -27,5 +27,5 @@ func (me *MoveableEntity) Move(v vector.Vector2) {
 }
 
 type Named struct {
-    name string
+    Name string
 }

@@ -17,7 +17,7 @@ type Player struct {
     MoveableEntity
     Named
     loginState LoginState
-    token string
+    Token string
     client *Client
 }
 
@@ -54,16 +54,16 @@ func (p *Player) doLogin() {
 
 func (p *Player) doLogout() {
     p.loginState = OFFLINE
-    p.token = ""
+    p.Token = ""
 }
 
 func (p *Player) SetToken(token string) {
     p.loginState = TOKEN_RECEIVED
-    p.token = token
+    p.Token = token
 }
 
 func (p *Player) Login(clientToken string) bool {
-    if p.HasToken() && p.token == clientToken {
+    if p.HasToken() && p.Token == clientToken {
         p.doLogin()
         return true
     } else {
@@ -79,4 +79,9 @@ func (p *Player) MarshalGame() []byte {
 
 func (p *Player) write(payload GameWriter) {
     p.client.write(payload)
+}
+
+func (p *Player) UnmarshalGame(data []byte) error {
+    err := Deserialize(data, p)
+    return err
 }

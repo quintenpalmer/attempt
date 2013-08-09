@@ -60,7 +60,7 @@ func (w *World) GetPlayer(name string) (*Player, bool) {
 
 func (w *World) NewPlayer(name string, token string) *Player {
     p := MakePlayer(5, name, vector.Vector2{0, 0})
-    w.players[p.name] = p
+    w.players[p.Name] = p
     return p
 }
 
