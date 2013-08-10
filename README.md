@@ -34,5 +34,8 @@ Running The Server
 
 Run the game server:
   - "go run gameserver.go"
+    - You can set the log level for the game server by appending the argument "-log <level>", where
+      <level> is a value between 0 and 5. Debugging would use log level 0, with less logging as the
+      number is increased.
 Run the webserver:
   - See webserver/README.md
