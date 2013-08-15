@@ -59,9 +59,23 @@ func (w *World) GetPlayer(name string) (*Player, bool) {
 }
 
 func (w *World) NewPlayer(name string, token string) *Player {
-    p := MakePlayer(5, name, vector.Vector2{0, 0})
-    w.players[p.Name] = p
-    return p
+    path := "players/" + name
+    if res, _ := fileSystem.FileExists(path); res {
+        p, err := fileSystem.LoadPlayer(path)
+        if err != nil {
+            applog.Errorf("Could not load player at path: %s. Error: %s",
+                          path, err)
+            return nil
+        }
+        w.players[p.Name] = p
+        return p
+    } else {
+        applog.Debugf("Creating a new player")
+        p := MakePlayer(5, name, vector.Vector2{0, 0})
+        w.players[p.Name] = p
+        return p
+    }
+    return nil
 }
 
 func (w *World) Start() {
@@ -88,7 +102,12 @@ func (w *World) HandleConnections() {
 func (w *World) HandleShutdown() {
     for client := range w.unregister {
         applog.Debugf("Client %s logging out", client)
-
+        path := "players/" + client.player.Name
+        err := fileSystem.Save(path, client.player)
+        if err != nil {
+            applog.Errorf("Failed to save player at path: %s. Error: %s",
+                          path, err)
+        }
     }
 }
 
