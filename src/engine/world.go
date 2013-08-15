@@ -71,7 +71,7 @@ func (w *World) NewPlayer(name string, token string) *Player {
         return p
     } else {
         applog.Debugf("Creating a new player")
-        p := MakePlayer(5, name, vector.Vector2{0, 0})
+        p := MakePlayer(w.getNextId(), name, vector.Vector2{0, 0})
         w.players[p.Name] = p
         return p
     }
@@ -87,6 +87,10 @@ func (w *World) Start() {
 func (w *World) SendPlayerInitialInfo(p *Player) {
     p.write(MakeMapPacket(w.worldMap.grid))
     p.write(MakePlayerPacket(p))
+    RepeatingTimer(PLAYER_UPDATE_TIMER, func () bool {
+        p.write(MakeNearbyPlayerUpdatePacket(w))
+        return p.IsOnline()
+    })
 }
 
 func (w *World) HandleConnections() {
@@ -123,7 +127,7 @@ func (w *World) UpdateLoop() {
     }
 }
 
-func (w *World) GetNextId() uint {
+func (w *World) getNextId() uint {
     id := w.currentId
     w.currentId++
     return id

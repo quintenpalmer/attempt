@@ -68,13 +68,14 @@ func (packet *MapPacket) Handle(_ *World, _ *Player, _ *Client) {
 }
 
 type PlayerPacket struct {
+    Id uint
     X int
     Y int
     Name string
 }
 
 func MakePlayerPacket(p *Player) *PlayerPacket {
-    return &PlayerPacket{ p.Position.X, p.Position.Y, p.Name }
+    return &PlayerPacket{ p.Id, p.Position.X, p.Position.Y, p.Name }
 }
 
 func (packet *PlayerPacket) MarshalGame() []byte {
@@ -124,6 +125,30 @@ func (packet *ChatPacket) Handle(_ *World, _ *Player, _ *Client) {
     world.Broadcast(packet)
 }
 
+type NearbyPlayerUpdatePacket struct {
+    Players []PlayerPacket
+}
+
+func (packet *NearbyPlayerUpdatePacket) MarshalGame() []byte {
+    return Serialize(packet)
+}
+
+func (packet *NearbyPlayerUpdatePacket) UnmarshalGame(data []byte) error {
+    return Deserialize(data, &packet)
+}
+
+func (packet *NearbyPlayerUpdatePacket) Handle(_ *World, _ *Player, _ *Client) {
+    InvalidPacketPanic(packet)
+}
+
+func MakeNearbyPlayerUpdatePacket(world *World) *NearbyPlayerUpdatePacket {
+    playerUpdates := make([]PlayerPacket, 0, len(world.players))
+    for _, player := range world.players {
+        playerUpdates = append(playerUpdates, *MakePlayerPacket(player))
+    }
+    return &NearbyPlayerUpdatePacket{playerUpdates}
+}
+
 func initializePacketStructures() (map[byte] Packet, map[reflect.Type] byte) {
     idsToStructs := make(map [byte] Packet)
     idsToStructs[0] = new(LoginPacket)
@@ -131,6 +156,7 @@ func initializePacketStructures() (map[byte] Packet, map[reflect.Type] byte) {
     idsToStructs[2] = new(MapPacket)
     idsToStructs[3] = new(MovePlayerPacket)
     idsToStructs[4] = new(ChatPacket)
+    idsToStructs[5] = new(NearbyPlayerUpdatePacket)
     structsToIds := make(map [reflect.Type] byte)
     for id, initStruct := range(idsToStructs) {
         tipe := reflect.TypeOf(initStruct)

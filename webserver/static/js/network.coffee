@@ -10,6 +10,7 @@ PLAYER_UPDATE_PID = 1
 MAP_UPDATE_PID = 2
 MOVE_PLAYER_PID = 3
 CHAT_PID = 4
+NEARBY_PLAYER_UPDATE_PID = 5
 
 # Packet Handling
 PacketHandler = ?(Any) -> Any
@@ -21,9 +22,11 @@ mapUpdate = (packet) ->
 
 playerUpdate :: PacketHandler
 playerUpdate = (packet) ->
-    @world.player.x = packet.X
-    @world.player.y = packet.Y
+    @world.player.id = packet.Id
+    @setPosition @world.player, packet.X, packet.Y
     @world.player.name = packet.Name
+    console.log ("Player position: " + packet.X + ", " + packet.Y)
+    console.log ("Camera position: " + @world.camera.getX() + ", " + @world.camera.getY())
 
 chatUpdate :: PacketHandler
 chatUpdate = (packet) ->
@@ -33,6 +36,11 @@ chatUpdate = (packet) ->
     chatWindow.val(chatWindow.val() + '\n' + chatString)
     chatWindow.scrollTop(chatWindow[0].scrollHeight - chatWindow.height())
 
+nearbyPlayerUpdate :: PacketHandler
+nearbyPlayerUpdate = (packet) ->
+    console.log packet.Players
+    for playerPacket in packet.Players
+        @world.updatePlayer playerPacket
 
 PACKET_HANDLERS :: [...(Undefined or PacketHandler)]
 PACKET_HANDLERS = (undefined for i in [0..256])
@@ -50,6 +58,7 @@ initializePacketHandlers = () ->
     registerPacketHandler(PLAYER_UPDATE_PID, playerUpdate)
     registerPacketHandler(MAP_UPDATE_PID, mapUpdate)
     registerPacketHandler(CHAT_PID, chatUpdate)
+    registerPacketHandler(NEARBY_PLAYER_UPDATE_PID, nearbyPlayerUpdate)
 
 userLogin = () ->
     console.log "Sending login info..."

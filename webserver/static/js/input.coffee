@@ -14,10 +14,10 @@ movePlayer :: (Num, Num) -> Any
 movePlayer = (dx, dy) ->
     sendMove dx, dy
 
-moveUp = (event) -> movePlayer(0, MOVE_AMOUNT)
-moveDown = (event) -> movePlayer(0, -MOVE_AMOUNT)
-moveLeft = (event) -> movePlayer(MOVE_AMOUNT, 0)
-moveRight = (event) -> movePlayer(-MOVE_AMOUNT, 0)
+moveUp = (event) -> movePlayer 0, -MOVE_AMOUNT
+moveDown = (event) -> movePlayer 0, MOVE_AMOUNT
+moveLeft = (event) -> movePlayer -MOVE_AMOUNT, 0
+moveRight = (event) -> movePlayer MOVE_AMOUNT, 0
 
 # key event handler registration
 
