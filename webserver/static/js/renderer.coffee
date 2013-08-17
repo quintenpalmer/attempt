@@ -5,6 +5,12 @@ CENTER_Y = @HEIGHT / 2
 stage = new PIXI.Stage 0xEEFFFF
 renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT)
 @graphics = new PIXI.Graphics()
+FONT = {
+    font: "14pt Arial"
+    fill: "white"
+    stroke: "black"
+    strokeThickness: 1
+}
 
 tileHeight = 30
 tileWidth = 30
@@ -64,10 +70,12 @@ drawMap = (terrain, xOffset, yOffset) ->
 updateSprite = (player, offX, offY) ->
     if not player.sprite
         player.sprite = stagePlayer 0, 0
-        player.sprite.addChild (new PIXI.Text player.name)
+        nameText = new PIXI.Text player.name, FONT
+        player.sprite.addChild nameText
+        nameText.position.x -= Math.floor(nameText.width / 2 - player.sprite.width / 2)
+        nameText.position.y -= 20
     player.sprite.position.x = player.x + offX
     player.sprite.position.y = player.y + offY
-    console.log ("Player " + player.name + " at " + player.sprite.position.x + ", " + player.sprite.position.y)
 
 updateSprites = () ->
     camera = @world.camera
