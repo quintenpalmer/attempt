@@ -7,7 +7,7 @@ import (
 )
 
 var (
-    PLAYER_UPDATE_TIMER, _ = time.ParseDuration("500ms")
+    PLAYER_UPDATE_TIMER, _ = time.ParseDuration("50ms")
 )
 
 // TODO: Make this a non-global variable
