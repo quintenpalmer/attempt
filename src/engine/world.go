@@ -106,6 +106,9 @@ func (w *World) HandleConnections() {
 func (w *World) HandleShutdown() {
     for client := range w.unregister {
         applog.Debugf("Client %s logging out", client)
+        if client.player == nil {
+            continue
+        }
         path := "players/" + client.player.Name
         err := fileSystem.Save(path, client.player)
         if err != nil {
