@@ -60,7 +60,7 @@ World = ?{
 
 makePlayer :: (Num, Str, Num, Num, Num, Num) -> Player
 makePlayer = (id, name, x, y, curHealth, maxHealth) ->
-    console.log "NEW PLAYER"
+    console.log ("New player: " + name + " (" + id + ")")
     p = {
         id: id
         name: name
@@ -69,7 +69,6 @@ makePlayer = (id, name, x, y, curHealth, maxHealth) ->
         curHealth: curHealth
         maxHealth: maxHealth
         setHealth: (cur, max) ->
-            console.log ("0 <= " + cur + " <= " + max)
             this.maxHealth = max
             this.curHealth = cur
     }

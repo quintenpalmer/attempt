@@ -37,7 +37,6 @@ chatUpdate = (packet) ->
 
 nearbyPlayerUpdate :: PacketHandler
 nearbyPlayerUpdate = (packet) ->
-    console.log packet.Players
     for playerPacket in packet.Players
         @world.updatePlayer playerPacket
 
@@ -69,7 +68,7 @@ handlePacket :: (Str) -> Any
 handlePacket = (packet) ->
     pid = packet.charCodeAt 0
     data = packet.substring 1
-    console.log ("received packet " + pid + ": " + data)
+#    console.log ("received packet " + pid + ": " + data)
     handler = PACKET_HANDLERS[pid]
     handler($.parseJSON(data))
 
