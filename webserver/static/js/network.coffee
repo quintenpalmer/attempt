@@ -25,8 +25,7 @@ playerUpdate = (packet) ->
     @world.player.id = packet.Id
     @setPosition @world.player, packet.X, packet.Y
     @world.player.name = packet.Name
-    console.log ("Player position: " + packet.X + ", " + packet.Y)
-    console.log ("Camera position: " + @world.camera.getX() + ", " + @world.camera.getY())
+    @world.player.setHealth packet.CurHealth, packet.MaxHealth
 
 chatUpdate :: PacketHandler
 chatUpdate = (packet) ->

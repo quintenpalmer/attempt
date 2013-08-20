@@ -16,6 +16,7 @@ const (
 type Player struct {
     MoveableEntity
     Named
+    Health
     loginState LoginState
     Token string
     client *Client
@@ -25,6 +26,7 @@ func MakePlayer(id uint, name string, position vector.Vector2) *Player {
     return &Player {
         MoveableEntity{Entity{id, position}},
         Named{name},
+        *MakeHealth(100),
         OFFLINE,
         "",
         nil,

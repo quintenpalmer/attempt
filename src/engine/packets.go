@@ -72,10 +72,19 @@ type PlayerPacket struct {
     X int
     Y int
     Name string
+    CurHealth uint
+    MaxHealth uint
 }
 
 func MakePlayerPacket(p *Player) *PlayerPacket {
-    return &PlayerPacket{ p.Id, p.Position.X, p.Position.Y, p.Name }
+    return &PlayerPacket{
+        p.Id,
+        p.Position.X,
+        p.Position.Y,
+        p.Name,
+        p.CurHealth,
+        p.MaxHealth,
+    }
 }
 
 func (packet *PlayerPacket) MarshalGame() []byte {

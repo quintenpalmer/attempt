@@ -29,6 +29,11 @@ Player = ?{
     name: Str
     x: Num
     y: Num
+    curHealth: Num
+    maxHealth: Num
+    setHealth: (Num, Num) -> Any
+    -| invariant: ->
+        @.curHealth <= @.maxHealth and @.curHealth >= 0
 }
 
 TileGrid = ?([...Any])
@@ -53,14 +58,20 @@ World = ?{
 
 # --- Player ---
 
-makePlayer :: (Num, Str, Num, Num) -> Player
-makePlayer = (id, name, x, y) ->
+makePlayer :: (Num, Str, Num, Num, Num, Num) -> Player
+makePlayer = (id, name, x, y, curHealth, maxHealth) ->
     console.log "NEW PLAYER"
     p = {
         id: id
         name: name
         x: x
         y: y
+        curHealth: curHealth
+        maxHealth: maxHealth
+        setHealth: (cur, max) ->
+            console.log ("0 <= " + cur + " <= " + max)
+            this.maxHealth = max
+            this.curHealth = cur
     }
     return p
 
@@ -112,14 +123,15 @@ makeWorld = (player) -> {
         if id == this.player.id
             return
         if not this.players[id]
-            player = makePlayer(id, p.Name, p.X, p.Y)
+            player = makePlayer id, p.Name, p.X, p.Y, p.CurHealth, p.MaxHealth
             this.players[id] = player
         else
-            setPosition(this.players[id], p.X, p.Y)
+            setPosition this.players[id], p.X, p.Y
+            player.setHealth p.CurHealth, p.MaxHealth
     entities: {}
 }
 
 # --- Global Exported Definitions ---
 
-@world = makeWorld (makePlayer 0, "test-player", 0, 0)
+@world = makeWorld (makePlayer 0, "", 0, 0, 1, 1)
 @world.camera.attach (-> world.player)
