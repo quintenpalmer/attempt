@@ -68,6 +68,7 @@ func (w *World) NewPlayer(name string, token string) *Player {
             return nil
         }
         w.players[p.Name] = p
+        p.Id = w.getNextId()
         return p
     } else {
         applog.Debugf("Creating a new player")
