@@ -1,5 +1,5 @@
 @WIDTH = 700
-@HEIGHT = 300
+@HEIGHT = 400
 CENTER_X = @WIDTH / 2
 CENTER_Y = @HEIGHT / 2
 stage = new PIXI.Stage 0xEEFFFF
@@ -54,7 +54,6 @@ drawMap = (terrain, xOffset, yOffset) ->
     for row, i in terrain
         for tile, j in row
             drawTile i, j
-    requestAnimFrame animate
 
 @stagePlayer :: (Num, Num) -> Any
 @stagePlayer = (x, y) ->
@@ -82,14 +81,63 @@ updateSprites = () ->
     for p in _.values(@world.players)
         updateSprite p, CENTER_X - camera.getX(), CENTER_Y - camera.getY()
 
+# UI CONSTANTS
+UI_FONT = {
+    font: "12pt Arial"
+}
+UI_FONT_HEALTH = {
+    font: "12pt Arial"
+    fill: "red"
+}
+UI_PLAYER_PANEL_X = 0
+UI_PLAYER_PANEL_Y = 300
+UI_PLAYER_PANEL_WIDTH = 200
+UI_PLAYER_PANEL_HEIGHT = 100
+UI_PLAYER_PANEL_BG = 0xABABAB
+UI_PLAYER_PANEL_BORDER_COLOR = 0x000000
+UI_PLAYER_PANEL_BORDER_SIZE = 1
+UI_PLAYER_PANEL_INDENT_X = 10
+UI_PLAYER_PANEL_INDENT_Y = 10
+UI_PLAYER_PANEL_SEP_Y = 16
+
+@UI = {
+    drawPlayerPanel: (player) ->
+        graphics.beginFill UI_PLAYER_PANEL_BG
+        graphics.lineStyle UI_PLAYER_PANEL_BORDER_SIZE, UI_PLAYER_PANEL_BORDER_COLOR, 1
+        graphics.drawRect UI_PLAYER_PANEL_X + 1, UI_PLAYER_PANEL_Y - 1, UI_PLAYER_PANEL_WIDTH, UI_PLAYER_PANEL_HEIGHT
+        graphics.endFill()
+
+    addText: (initText, font, x, y, parent) ->
+        text = new PIXI.Text initText, font
+        graphics.addChild text
+        text.position.x = x
+        text.position.y = y
+        return text
+
+    setupTextElements: (world) ->
+        @.playerName = @.addText "", UI_FONT, UI_PLAYER_PANEL_X + UI_PLAYER_PANEL_INDENT_X, UI_PLAYER_PANEL_Y + UI_PLAYER_PANEL_INDENT_Y
+        @.healthText = @.addText "", UI_FONT_HEALTH, @.playerName.position.x, @.playerName.position.y + UI_PLAYER_PANEL_SEP_Y
+}
+
+setupUI = (world) ->
+    @UI.setupTextElements world
+
+drawUI = (world) ->
+    @UI.playerName.setText world.player.name
+    @UI.healthText.setText (world.player.curHealth + " / " + world.player.maxHealth)
+    @UI.drawPlayerPanel (world.player)
+
 drawWorld = () ->
     updateSprites()
     xOff = CENTER_X - @world.camera.getX()
     yOff = CENTER_Y - @world.camera.getY()
     drawMap @world.grid, xOff, yOff
+    drawUI @world
+    requestAnimFrame animate
 
 @startRenderer = () ->
     document.getElementById('game').appendChild renderer.view
     stage.addChild graphics
     @world.player.sprite = @stagePlayer CENTER_X, CENTER_Y
+    setupUI @world
     setInterval drawWorld, 20
